@@ -11,6 +11,7 @@ define([
     "xstyle!/widgets/css/CampsiteWidget.css",
 
     'esri/map',
+    "esri/dijit/Search",
 
     "dojo/domReady!",
 
@@ -27,7 +28,8 @@ define([
     template,
     css,
 
-    Map
+    Map,
+    Search
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
@@ -47,9 +49,16 @@ define([
                 center: [-122.69, 45.52],
                 zoom: 3
             });
+            var search = new Search({
+              map: this.map
+            },"search");
+            search.startup();
+            
 
             // this.initBasemapButtons();
             this.addLayersToMap();
+
+            this.initMapWidgets();
         },
 
         addLayersToMap: function() {
@@ -76,6 +85,10 @@ define([
             on(dom.byId("btnNatGeo"), "click", function() {
                 this.map.setBasemap("national-geographic");
             });
+        },
+
+        initMapWidgets: function(){
+            
         },
 
         createSidebar: function() {

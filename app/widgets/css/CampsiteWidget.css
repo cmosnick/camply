@@ -1,35 +1,13 @@
-
-.main-container{
+#map {
     height: 100%;
-}
-
-div.map-column, div.sidebar{
-    padding-bottom: 100%;
-    margin-bottom: -100%;
-}
-
-div.map-column{
-    float: left;
-}
-
-div.sidebar{
-    float-right
-}
-
-div.title-row .col-md-12{
-    margin: 0px;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
-
-div.title-row .container-fluid{
-    padding: 0px;
-}
-
-.navbar, .navbar-inverse{
-    margin: 0px;
-}
-
-.nopadding {
-   padding: 0 !important;
-   margin: 0 !important;
+#search {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    left: 74px;
 }
