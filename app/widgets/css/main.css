@@ -1,0 +1,113 @@
+#mapDiv_root
+{height: 100% !important;}
+.map .container {
+height: 100%;}
+#mapDiv
+{
+height:100%}
+input, select {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input {
+    
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+::-webkit-input-placeholder { /* Chrome */
+  color: #A9DEA9;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #A9DEA9;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #A9DEA9;
+  opacity: 1;
+}
+:-moz-placeholder { /* Firefox 4 - 18 */
+  color: #A9DEA9;
+  opacity: 1;
+}
+
+
+input:hover {
+    background-color: #45a049;
+}
+form{}
+.formdiv {
+    opacity: 0.9;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 5%;
+    padding-top: 2%;
+    margin-top: 10%;
+ 
+    width: 30%;
+    margin-left: 30%;
+        
+}
+.f_formdiv {
+    background-color: rgba(242, 242, 242, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.f_background
+{
+background-image:url(../../images/18f63e24-1637-4897-a973-b0b80f6bbc24.jpg);
+    background-repeat:no-repeat;
+    text-align: center;
+    margin: 0;
+    background-size:cover;
+    vertical-align:middle;
+    padding: 0;
+height: auto
+}
+.coldiv {
+
+        
+}
+
+.title
+{
+font-size: 20px;
+    font-family: "Arial";
+    color: #4CAF50;
+}
+.background
+{
+background-image:url(../../images/18f63e24-1637-4897-a973-b0b80f6bbc24.jpg);
+    background-repeat:no-repeat;
+    text-align: center;
+    margin: 0;
+    margin-top: 20%;
+    background-size:cover;
+    vertical-align:middle;
+height: auto}
+.background2
+{
+background-image:url(../../images/18f63e24-1637-4897-a973-b0b80f6bbc24.jpg);
+    background-repeat:no-repeat;
+    text-align: center;
+    margin: 0;
+    margin-top: 10%;
+    background-size:cover;
+    vertical-align:middle;
+height: auto}
+p{margin-bottom: 5px;}
