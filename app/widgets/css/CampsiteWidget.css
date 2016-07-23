@@ -1,0 +1,7 @@
+.main-container{
+    height: 100%;
+}
+
+#mapDiv, #campsite-widget-bar{
+    height: 100%;
+}

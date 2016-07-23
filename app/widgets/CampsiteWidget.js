@@ -3,13 +3,15 @@ define([
     'dojo/_base/lang',
     'dojo/on',
     'dojo/dom',
+    'dojo/dom-construct',
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
     'dojo/text!/widgets/templates/CampsiteWidget.html',
+    "xstyle!/widgets/css/CampsiteWidget.css",
 
-    'dojo/dom-construct',
     'esri/map',
+
     "dojo/domReady!",
 
 
@@ -17,19 +19,28 @@ define([
     declare,
     lang,
     on,
-    dom,
+    dom,    
+    domConstruct,
 
     _WidgetBase,
     _TemplatedMixin,
     template,
+    css,
 
-    domConstruct,
     Map
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
 
+        constructor: function(options){
+            this.domNode = options.domNode || "campsite-widget-bar";
+            this.inherited(arguments);
+        },
+
         startup: function() {
+            // Create sidebar
+            this.createSidebar();
+
             // Create map
             this.map = new Map("mapDiv", {
                 basemap: "hybrid",
@@ -37,8 +48,7 @@ define([
                 zoom: 3
             });
 
-
-            this.initBasemapButtons();
+            // this.initBasemapButtons();
             this.addLayersToMap();
         },
 
@@ -66,6 +76,10 @@ define([
             on(dom.byId("btnNatGeo"), "click", function() {
                 this.map.setBasemap("national-geographic");
             });
+        },
+
+        createSidebar: function() {
+
         }
     });
 });

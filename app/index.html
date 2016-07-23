@@ -40,14 +40,15 @@
         'dojo/dom',
         'widgets/CampsiteWidget.js'
     ], function(dom, CampsiteWidget) {
-        var widget = new CampsiteWidget();
+        var widget = new CampsiteWidget({
+        });
         widget.startup();
     });
     </script>
 </head>
 
 <body>
-    <div class="panel panel-primary panel-fixed">
+    <!-- <div class="panel panel-primary panel-fixed">
         <div class="panel-heading">
             <h3 class="panel-title">Basemaps</h3>
         </div>
@@ -67,8 +68,26 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+
+
+    <div class="row-fluid main-container">
+        <div class="span12">
+            <h>TitleBar</h>
+        <div class="span12"></div>
+        <div class="row-fluid">
+            <div class="span8">
+                <div class="span7">
+                <div id="mapDiv"></div>
+                </div>
+            </div>
+            <div class="span4">
+                <div id="campsite-widget-bar", data-dojo-attach-point="campsite-widget-bar" data-dojo-type="CampsiteWidget"></div>
+            </div>
+        </div>
     </div>
-    <div id="mapDiv"></div>
+        
 </body>
 
 </html>
