@@ -13,6 +13,8 @@
     <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
     <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="widgets/css/main.css">
+
     <!-- <link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" /> -->
     <style>
     html,
@@ -50,15 +52,38 @@
 </head>
 
 <body class="calcite">
+    <!-- <div class="panel panel-primary panel-fixed">
+        <div class="panel-heading">
+            <h3 class="panel-title">Basemaps</h3>
+        </div>
+        <div class="panel-body">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnStreets" class="btn btn-default">Streets</button>
+                    <button id="btnSatellite" class="btn btn-default">Satellite</button>
+                    <button id="btnHybrid" class="btn btn-default">Hybrid</button>
+                    <button id="btnTopo" class="btn btn-default">Topo</button>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnGray" class="btn btn-default">Gray</button>
+                    <button id="btnNatGeo" class="btn btn-default">National Geographic</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
     <div class="outer-container">
         <div class="row title-row">
+            <div class="col-md-12">
                 <nav class="navbar navbar-inverse">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <h1 style="color:white;">TitleBar</h1>
+                            <h1 style="color:#ffffff;">SurveyPark2Me</h1>
                         </div>
                     </div>
                 </nav>
+            </div>
         </div>
         <div class="row row-map">
             <div class="col-md-8 nopadding map-column">
@@ -70,8 +95,25 @@
             </div>
             <div class="col-md-4 nopadding sidebar">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Choose a Campsite</div>
+                    <div class="btncontainer"><input type="button" class="backbtn" value="back">
+                        </div><div class="panel-heading">Park1
+                        </div>
                     <div class="panel-body">
+                        <div class="parkcard">
+                            <p class="tags">Tag1 Tag2</p>
+                                <label>Distance</label>
+                            <p>3 miles</p>                                
+                            <label>Address</label>
+                            <p>123 ABC St, City, State 11111</p>
+                            <label>Weather(today)</label>
+                            <p>Cloudy</p>                            
+                            <label>Temperature(today)</label>
+                            <p>74°F</p>          
+                             <label >Gallery</label><div>
+                        <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg">    </div>                     
+                       <input style=" margin-top:30px"type="submit" value="5 campsites available">  </div>
+                                                   
+                        </div>
                         
                     </div>
                 </div>

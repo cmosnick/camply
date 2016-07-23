@@ -1,10 +1,4 @@
-#mapDiv_root
-{height: 100% !important;}
-.map .container {
-height: 100%;}
-#mapDiv
-{
-height:100%}
+
 input, select {
     width: 30%;
     padding: 12px 20px;
@@ -111,3 +105,21 @@ background-image:url(../../images/18f63e24-1637-4897-a973-b0b80f6bbc24.jpg);
     vertical-align:middle;
 height: auto}
 p{margin-bottom: 5px;}
+
+.parkname{
+float: left;
+font-size: 16px;}
+.distance{
+float: right}
+.address{}
+.avalabile{font-size: 16px;}
+.parkcard{    border-bottom: thin solid #eeeeee;
+    margin-bottom: 10px;
+}
+.backbtn{width:50px;margin-left: 5px; height: 30px; padding: 2px;}
+.panel-heading{
+font-size: 18px !important; 
+text-align: center;}
+.btncontainer{float: left;}
+.nopadding{    overflow-y: scroll;
+    overflow-x:hidden;height:500px;}

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Basemaps</title>
+    <!-- <link rel="shortcut icon" href="//esri.github.io/quickstart-map-js/images/favicon.ico"> -->
+    <!-- ArcGIS API for JavaScript CSS-->
+    <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/dijit/calcite.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/esri/esri.css">
+    <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
+    <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="widgets/css/main.css">
+
+    <!-- <link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" /> -->
+    <style>
+    html,
+    body,
+    #mapDiv {
+        height: 100%;
+        width: 100%;
+    }
+    </style>
+    <!-- ArcGIS API for JavaScript library references -->
+    <script type="text/javascript">
+    var dojoConfig = {
+        async: true,
+        parseOnLoad: true,
+        packages: [{
+            name: "app",
+            location: location.pathname
+        }, {
+            name: "widget",
+            location: location.pathname.replace(/\/[^/]+$/, "./widgets")
+        }]
+    };
+    </script>
+    <script src="https://js.arcgis.com/3.17"></script>
+    <script type="text/javascript">
+    require([
+        'dojo/dom',
+        'widgets/CampsiteWidget.js',
+        'dojo/domReady!'
+    ], function(dom, CampsiteWidget) {
+        var widget = new CampsiteWidget({});
+        widget.startup();
+    });
+    </script>
+</head>
+
+<body class="calcite">
+    <!-- <div class="panel panel-primary panel-fixed">
+        <div class="panel-heading">
+            <h3 class="panel-title">Basemaps</h3>
+        </div>
+        <div class="panel-body">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnStreets" class="btn btn-default">Streets</button>
+                    <button id="btnSatellite" class="btn btn-default">Satellite</button>
+                    <button id="btnHybrid" class="btn btn-default">Hybrid</button>
+                    <button id="btnTopo" class="btn btn-default">Topo</button>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnGray" class="btn btn-default">Gray</button>
+                    <button id="btnNatGeo" class="btn btn-default">National Geographic</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="outer-container">
+        <div class="row title-row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-inverse">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <h1 style="color:#ffffff;">SurveyPark2Me</h1>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row row-map">
+            <div class="col-md-8 nopadding map-column">
+                <div class="widget-row">
+                    <div id="search"></div>
+                    <div id="locateButton"></div>
+                </div>
+                <div id="mapDiv"></div>
+            </div>
+            <div class="col-md-4 nopadding sidebar">
+                <div class="panel panel-default">
+                   <div class="btncontainer"><input type="button" class="backbtn" value="back">
+                        </div><div class="panel-heading">Park1 Campsites
+                        </div>
+                    <div class="panel-body">
+                        <div class="parkcard">
+                            <div style="float:none"><p class="parkname">Host</p>
+                            <p class="distance">Stardust</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Available time</p>
+                            <p class="distance">03/01/2017-04/01/2017</p></div>
+                            <div style="clear: both;"></div>
+                                                <div style="float:none"><p class="parkname">Number of people</p>
+                            <p class="distance">6</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Email</p>
+                            <p class="distance">xxxxx@xxxx.com</p></div>
+                            <div style="clear: both;"></div>                            
+                            <div style="float:none"><p class="parkname">Phone number</p>
+                            <p class="distance">444-444-4444</p></div>
+                            <div style="clear: both;"></div>
+                            
+                        </div>
+                                                <div class="parkcard">
+                            <div style="float:none"><p class="parkname">Host</p>
+                            <p class="distance">Stardust</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Available time</p>
+                            <p class="distance">03/01/2017-04/01/2017</p></div>
+                            <div style="clear: both;"></div>
+                                                <div style="float:none"><p class="parkname">Number of people</p>
+                            <p class="distance">6</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Email</p>
+                            <p class="distance">xxxxx@xxxx.com</p></div>
+                            <div style="clear: both;"></div>                            
+                            <div style="float:none"><p class="parkname">Phone number</p>
+                            <p class="distance">444-444-4444</p></div>
+                            <div style="clear: both;"></div>
+                            
+                        </div>
+                                                <div class="parkcard">
+                            <div style="float:none"><p class="parkname">Host</p>
+                            <p class="distance">Stardust</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Available time</p>
+                            <p class="distance">03/01/2017-04/01/2017</p></div>
+                            <div style="clear: both;"></div>
+                                                <div style="float:none"><p class="parkname">Number of people</p>
+                            <p class="distance">6</p></div>
+                            <div style="clear: both;"></div>
+                            <div style="float:none"><p class="parkname">Email</p>
+                            <p class="distance">xxxxx@xxxx.com</p></div>
+                            <div style="clear: both;"></div>                            
+                            <div style="float:none"><p class="parkname">Phone number</p>
+                            <p class="distance">444-444-4444</p></div>
+                            <div style="clear: both;"></div>
+                            
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
