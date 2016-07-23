@@ -39,8 +39,8 @@ div.outer-container{
     padding-right: 0px;
 }
 
-div.outer-container, div.row-map, div.map-column, div.sidebar{
-    height: 96%;
+div.row-map, div.map-column, div.sidebar{
+    height: 97%;
 }
 
 div.sidebar > div.panel{

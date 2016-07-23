@@ -12,11 +12,19 @@ define([
 
     'esri/map',
     "esri/dijit/Search",
+    "esri/dijit/LocateButton",
+
     "esri/layers/FeatureLayer",
+    "esri/layers/GraphicsLayer",
+
     "esri/renderers/SimpleRenderer",
     "esri/symbols/SimpleMarkerSymbol",
+    "esri/symbols/SimpleFillSymbol",
+    "esri/symbols/SimpleLineSymbol",
     "esri/Color",
-    "esri/dijit/LocateButton",
+    "esri/graphic",
+
+
     "esri/tasks/BufferParameters",
     "esri/tasks/GeometryService",
     "esri/tasks/QueryTask",
@@ -39,11 +47,18 @@ define([
 
     Map,
     Search,
+    LocateButton,
+
     FeatureLayer,
+    GraphicsLayer,
+
     SimpleRenderer,
     SimpleMarkerSymbol,
+    SimpleFillSymbol,
+    SimpleLineSymbol,
     Color,
-    LocateButton,
+    Graphic,
+
     BufferParameters,
     GeometryService,
     QueryTask,
@@ -52,6 +67,7 @@ define([
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
+        selectionColor: new Color([255, 153, 51]),
 
         constructor: function(options){
             this.domNode = options.domNode || "campsite-widget-bar";
@@ -69,7 +85,7 @@ define([
                 zoom: 3
             });
             
-            this.geomService = new GeometryService("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
+            this.geomService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
             this.addLayersToMap();
 
@@ -82,7 +98,7 @@ define([
                 id: "campSiteLayer"
             });
             this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
-                5, null, new Color([255, 153, 51]))));
+                5, null, this.selectionColor)));
             this.map.addLayer(this.campSiteLayer);
         },
 
@@ -108,30 +124,42 @@ define([
         },
 
         drawBuffer: function(position, bufferRadius = 5) {
-            // Create buffer graphic
-            // var graphic = new Graphic();
+            
 
+            var bufferParams = new BufferParameters();
+            bufferParams.geometries = [position];
+            bufferParams.distances = [bufferRadius];
+            bufferParams.unit = GeometryService.UNIT_NAUTICAL_MILE;
+            bufferParams.outSpatialReference = this.map.spatialReference;
 
-            // var bufferParams = new BufferParameters();
-            // bufferParams.geometries = [position];
-            // bufferParams.distances = [bufferRadius];
-            // bufferParams.unit = GeometryService.UNIT_MILE;
-            // bufferParams.outSpatialReference = this.map.spatialReference;
+            this.geomService.buffer(bufferParams, lang.hitch(this, function(bufferGeoms){
+                console.log(bufferGeoms);
+                // Query where layer intersects buffer grpaghic geometry
+                var queryTask = new QueryTask("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
+                var query = new Query();
+                query.geometry = bufferGeoms[0];
+                query.outSpatialReference = this.map.spatialReference;
+                query.returnGeometry = true;
+                query.outFields = ["*"];
+                queryTask.execute(query, lang.hitch(this, function(results){
+                    console.log(results);
 
+                    
+                }));
 
-            // // Query where layer intersects buffer grpaghic geometry
-            // var queryTask = new QueryTask("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
-            // var query = new Query();
-            // query.where = "STATE_NAME = 'Washington'";
-            // query.outSpatialReference = {wkid:102100}; 
-            // query.returnGeometry = true;
-            // query.outFields = ["CITY_NAME"];
-            // queryTask.execute(query, addPointsToMap);
-
-
-
-
-
+                // Create buffer graphic
+                var graphic = new Graphic(bufferGeoms[0], new SimpleFillSymbol(
+                    SimpleFillSymbol.STYLE_NULL,
+                    new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, this.selectionColor, 2),
+                    null
+                ));
+                if(this.graphicsLayer == 'undefined' || this.graphicsLayer == null){
+                    this.graphicsLayer = new GraphicsLayer();
+                    this.map.addLayer(this.graphicsLayer);
+                }
+                this.graphicsLayer.clear();
+                this.graphicsLayer.add(graphic);
+            }));
         }
     });
 });
