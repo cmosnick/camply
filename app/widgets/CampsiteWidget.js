@@ -17,6 +17,10 @@ define([
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Color",
     "esri/dijit/LocateButton",
+    "esri/tasks/BufferParameters",
+    "esri/tasks/GeometryService",
+    "esri/tasks/QueryTask",
+    "esri/tasks/query",
 
     "dojo/domReady!",
 
@@ -39,7 +43,11 @@ define([
     SimpleRenderer,
     SimpleMarkerSymbol,
     Color,
-    LocateButton
+    LocateButton,
+    BufferParameters,
+    GeometryService,
+    QueryTask,
+    Query
 
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -61,9 +69,8 @@ define([
                 zoom: 3
             });
             
+            this.geomService = new GeometryService("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
 
-
-            // this.initBasemapButtons();
             this.addLayersToMap();
 
             this.initMapWidgets();
@@ -79,28 +86,6 @@ define([
             this.map.addLayer(this.campSiteLayer);
         },
 
-        initBasemapButtons: function () {
-            // Wire UI Events
-            on(dom.byId("btnStreets"), "click", function() {
-                this.map.setBasemap("streets");
-            });
-            on(dom.byId("btnSatellite"), "click", function() {
-                this.map.setBasemap("satellite");
-            });
-            on(dom.byId("btnHybrid"), "click", function() {
-                this.map.setBasemap("hybrid");
-            });
-            on(dom.byId("btnTopo"), "click", function() {
-                this.map.setBasemap("topo");
-            });
-            on(dom.byId("btnGray"), "click", function() {
-                this.map.setBasemap("gray");
-            });
-            on(dom.byId("btnNatGeo"), "click", function() {
-                this.map.setBasemap("national-geographic");
-            });
-        },
-
         initMapWidgets: function(){
             var search = new Search({
               map: this.map
@@ -112,12 +97,40 @@ define([
             }, "locateButton");
             locate.startup();
 
-            on(locate, "click", lang.hitch(this, function(event){
-                
+            on(locate, "locate", lang.hitch(this, function(event){
+                console.log(event);
+                this.drawBuffer(event.graphic.geometry);
             }))
         },
 
         createSidebar: function() {
+
+        },
+
+        drawBuffer: function(position, bufferRadius = 5) {
+            // Create buffer graphic
+            // var graphic = new Graphic();
+
+
+            // var bufferParams = new BufferParameters();
+            // bufferParams.geometries = [position];
+            // bufferParams.distances = [bufferRadius];
+            // bufferParams.unit = GeometryService.UNIT_MILE;
+            // bufferParams.outSpatialReference = this.map.spatialReference;
+
+
+            // // Query where layer intersects buffer grpaghic geometry
+            // var queryTask = new QueryTask("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
+            // var query = new Query();
+            // query.where = "STATE_NAME = 'Washington'";
+            // query.outSpatialReference = {wkid:102100}; 
+            // query.returnGeometry = true;
+            // query.outFields = ["CITY_NAME"];
+            // queryTask.execute(query, addPointsToMap);
+
+
+
+
 
         }
     });

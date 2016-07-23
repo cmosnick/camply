@@ -1,4 +1,4 @@
-#map {
+#mapDiv{
     height: 100%;
     width: 100%;
     margin: 0;
@@ -20,8 +20,8 @@
 #locateButton {
     display: inline;
     position: relative;
-    top: -31px;
-    left: 25s0px;
+    top: -32px;
+    left: 250px;
     z-index: 50;
 }
 
@@ -36,4 +36,8 @@ div.outer-container{
     width: 100%;
     height: 100%;
     padding: 10px;
+}
+
+div.outer-container, div.row-map, div.map-column, div.sidebar, div.sidebar > div.panel{
+    height: 96%;
 }
