@@ -11,6 +11,11 @@ define([
     "xstyle!/widgets/css/CampsiteWidget.css",
 
     'esri/map',
+    "esri/dijit/Search",
+    "esri/layers/FeatureLayer",
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/Color",
 
     "dojo/domReady!",
 
@@ -27,7 +32,13 @@ define([
     template,
     css,
 
-    Map
+    Map,
+    Search,
+    FeatureLayer,
+    SimpleRenderer,
+    SimpleMarkerSymbol,
+    Color
+
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
@@ -47,13 +58,26 @@ define([
                 center: [-122.69, 45.52],
                 zoom: 3
             });
+            var search = new Search({
+              map: this.map
+            },"search");
+            search.startup();
+
 
             // this.initBasemapButtons();
             this.addLayersToMap();
+
+            this.initMapWidgets();
         },
 
         addLayersToMap: function() {
             console.log("hello");
+            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+                id: "campSiteLayer"
+            });
+            this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
+                5, null, new Color([255, 153, 51]))));
+            this.map.addLayer(this.campSiteLayer);
         },
 
         initBasemapButtons: function () {
@@ -76,6 +100,10 @@ define([
             on(dom.byId("btnNatGeo"), "click", function() {
                 this.map.setBasemap("national-geographic");
             });
+        },
+
+        initMapWidgets: function(){
+            
         },
 
         createSidebar: function() {

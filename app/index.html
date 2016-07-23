@@ -6,13 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
     <title>Basemaps</title>
-    <link rel="shortcut icon" href="//esri.github.io/quickstart-map-js/images/favicon.ico">
+    <!-- <link rel="shortcut icon" href="//esri.github.io/quickstart-map-js/images/favicon.ico"> -->
     <!-- ArcGIS API for JavaScript CSS-->
-    <link rel="stylesheet" href="//js.arcgis.com/3.10/js/esri/css/esri.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/dijit/calcite.css">
+    <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/esri/esri.css">
     <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
     <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="widgets/css/main.css" />
-
+    <link rel="stylesheet" href="widgets/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- <link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" /> -->
     <style>
     html,
     body,
@@ -35,11 +37,12 @@
         }]
     };
     </script>
-    <script src="//js.arcgis.com/3.10compact"></script>
+    <script src="https://js.arcgis.com/3.17"></script>
     <script type="text/javascript">
     require([
         'dojo/dom',
-        'widgets/CampsiteWidget.js'
+        'widgets/CampsiteWidget.js',
+        'dojo/domReady!'
     ], function(dom, CampsiteWidget) {
         var widget = new CampsiteWidget({});
         widget.startup();
@@ -47,7 +50,7 @@
     </script>
 </head>
 
-<body>
+<body class="calcite">
     <!-- <div class="panel panel-primary panel-fixed">
         <div class="panel-heading">
             <h3 class="panel-title">Basemaps</h3>
@@ -80,19 +83,21 @@
             </nav>
         </div>
     </div>
-    <div class="row row-map"">
+    <div class="row row-map">
         <div class="col-md-8 nopadding map-column">
+            <div id="search"></div>
             <div id="mapDiv"></div>
         </div>
         <div class="col-md-4 nopadding sidebar">
             <div class="panel panel-default">
-                <div class="panel-heading">Panel heading</div>
+                <div class="panel-heading">Choose a Campsite</div>
                 <div class="panel-body">
-                    Panel content
+                    
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
