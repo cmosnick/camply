@@ -162,7 +162,7 @@ define([
                 query.outFields = ["*"];
                 queryTask.execute(query, lang.hitch(this, function(results){
                     console.log(results);
-
+                    
                     // mute layer
                     this.campSiteLayer.hide();
                     // Add points to graphics layer
@@ -172,6 +172,7 @@ define([
                         this.graphicsLayer.add(graphic);
                         on(graphic, "click", lang.hitch(this, function(event){
                             console.log(event);
+                            
                         }));
                     }
                 }));
