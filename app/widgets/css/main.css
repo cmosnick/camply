@@ -121,5 +121,5 @@ float: right}
 font-size: 18px !important; 
 text-align: center;}
 .btncontainer{float: left;}
-.nopadding{    overflow-y: scroll;
-    overflow-x:hidden;height:500px;}
+.sidebar{   height: 100%;}
+.panel{overflow: auto; }
