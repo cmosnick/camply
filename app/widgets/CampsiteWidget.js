@@ -76,7 +76,7 @@ define([
                 id: "campSiteLayer"
             });
             this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
-                5, new Color(255, 153, 51))));
+                5, null, new Color([255, 153, 51]))));
             this.map.addLayer(this.campSiteLayer);
         },
 
