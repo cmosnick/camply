@@ -12,6 +12,10 @@ define([
 
     'esri/map',
     "esri/dijit/Search",
+    "esri/layers/FeatureLayer",
+    "esri/renderers/SimpleRenderer",
+    "esri/symbols/SimpleMarkerSymbol",
+    "esri/Color",
 
     "dojo/domReady!",
 
@@ -29,7 +33,12 @@ define([
     css,
 
     Map,
-    Search
+    Search,
+    FeatureLayer,
+    SimpleRenderer,
+    SimpleMarkerSymbol,
+    Color
+
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
@@ -53,7 +62,7 @@ define([
               map: this.map
             },"search");
             search.startup();
-            
+
 
             // this.initBasemapButtons();
             this.addLayersToMap();
@@ -63,6 +72,12 @@ define([
 
         addLayersToMap: function() {
             console.log("hello");
+            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+                id: "campSiteLayer"
+            });
+            this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
+                5, new Color(255, 153, 51))));
+            this.map.addLayer(this.campSiteLayer);
         },
 
         initBasemapButtons: function () {
