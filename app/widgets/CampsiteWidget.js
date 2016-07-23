@@ -78,7 +78,10 @@ define([
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
         templateString: template,
-        selectionColor: new Color([255, 153, 51]),
+        selectionColor: new Color([93, 191, 63]),
+        renderColor: new Color([255, 153, 51]),
+        bufferValue: 20,
+        panelIds: ["parks-list", "park-detail", "campsites-list"],
 
         constructor: function(options){
             this.domNode = options.domNode || "campsite-widget-bar";
@@ -111,10 +114,12 @@ define([
             });
             this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
                 id: "campSiteLayer",
-                infoTemplate: infoTemplate
+                infoTemplate: infoTemplate,
+                outFields: ["*"],
+                mode: FeatureLayer.MODE_ONDEMAND
             });
-            this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
-                5, null, this.selectionColor)));
+            this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.renderColor)));
+            this.campSiteLayer.setSelectionSymbol(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
             this.map.addLayer(this.campSiteLayer);
         },
 
@@ -139,7 +144,7 @@ define([
 
         },
 
-        drawBuffer: function(position, bufferRadius = 10) {
+        drawBuffer: function(position, bufferRadius = 20) {
             var bufferParams = new BufferParameters();
             bufferParams.geometries = [position];
             bufferParams.distances = [bufferRadius];
@@ -160,22 +165,7 @@ define([
                 query.outSpatialReference = this.map.spatialReference;
                 query.returnGeometry = true;
                 query.outFields = ["*"];
-                queryTask.execute(query, lang.hitch(this, function(results){
-                    console.log(results);
-                    
-                    // mute layer
-                    this.campSiteLayer.hide();
-                    // Add points to graphics layer
-                    for(var index in results.features){
-                        var feature = results.features[index];
-                        var graphic = new Graphic(feature.geometry, new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
-                        this.graphicsLayer.add(graphic);
-                        on(graphic, "click", lang.hitch(this, function(event){
-                            console.log(event);
-                            
-                        }));
-                    }
-                }));
+                queryTask.execute(query, lang.hitch(this, this.addFeaturesToMapAndSidebar));
 
                 // Create buffer graphic
                 var graphic = new Graphic(bufferGeoms[0], new SimpleFillSymbol(
@@ -187,6 +177,63 @@ define([
                 var extent = graphicsUtils.graphicsExtent([graphic]);
                 this.map.setExtent(extent);
             }));
+        },
+
+        addFeaturesToMapAndSidebar: function(results) {
+            console.log(results);
+
+            // mute layer
+            this.campSiteLayer.hide();
+            // Select points on campsite layer
+            this.campSiteLayer.clearSelection();
+            this.campSiteLayer.selectFeatures(results.features);
+            this.clearParksList();
+            for(var index in results.features){
+                var feature = results.features[index];
+                // Add features info to parks-list sidebar
+                var name = feature.attributes.Name;
+                var addr = feature.attributes.State;
+                var oid = feature.attributes.OBJECTID;
+                var parkCardHtml = '<div style="float:none">\
+                            <p class="parkname">'+ name +'</p>\
+                            <p class="distance">3miles</p>\
+                        </div>\
+                        <div style="clear: both;"></div>\
+                        <div>\
+                            <p class="address">'+ addr + '</p>\
+                        </div>\
+                        <div>\
+                            <p class="avalabile">5 campsites available</p>\
+                        </div>';
+                var parkCard = domConstruct.create("div", {id: oid, innerHTML: parkCardHtml, class: "parkcard"}, "parks-list", "last");
+                on(parkCard, "click", lang.hitch(this, this.goToParkInfo(parkCard.id)));
+            }
+        },
+
+        clearParksList: function() {
+            console.log("about to clear parks list");
+            dojo.query(".parkcard", this.parksList).forEach(function(parkCard){
+                domConstruct.destroy(parkCard);
+            })
+        },
+
+        goToParkInfo: function(parkId){
+            console.log("Going to park info: ", parkId);
+
+
+            // this.showPanel("park-detail");
+        },
+
+        showPanel: function(panelId){
+            for(var index in this.panelIds){
+                var id = this.panelIds[index];
+                var panel = document.getElementById(id);
+                if(id == panelId && panel.classList.contains("hidden")){
+                    panel.classList.remove("hidden");
+                } else {
+                    panel.classList.add("hidden");
+                }
+            }
         }
     });
 });

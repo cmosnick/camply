@@ -71,11 +71,11 @@
             </div>
             <div class="col-md-4 nopadding sidebar">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Choose a Campsite</div>
+                    <div class="panel-heading" id="sidebar-title">Choose a Campsite</div>
                     <div class="panel-body">
                         <!-- List of parks in view -->
-                        <div id="parks-list">
-                            <div class="parkcard">
+                        <div id="parks-list" data-dojo-attach-point="parksList">
+                            <!-- <div class="parkcard">
                                 <div style="float:none">
                                     <p class="parkname">Park1</p>
                                     <p class="distance">3miles</p>
@@ -113,10 +113,10 @@
                                 <div>
                                     <p class="avalabile">5 campsites available</p>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- Specific park page -->
-                        <div id="park-detail" class="hidden">
+                        <div id="park-detail" data-dojo-attach-point="parkDetail" class="hidden">
                             <div class="parkcard">
                                 <p class="tags">Tag1 Tag2</p>
                                 <label>Distance</label>
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <!-- List of campsites in a park -->
-                        <div id="campsites-list" class="hidden">
+                        <div id="campsites-list" data-dojo-attach-point="campsitesList" class="hidden">
                             <div class="parkcard">
                                 <div style="float:none">
                                     <p class="parkname">Host</p>
