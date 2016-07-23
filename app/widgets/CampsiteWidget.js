@@ -23,12 +23,17 @@ define([
     "esri/symbols/SimpleLineSymbol",
     "esri/Color",
     "esri/graphic",
+    "esri/graphicsUtils",
 
 
     "esri/tasks/BufferParameters",
     "esri/tasks/GeometryService",
     "esri/tasks/QueryTask",
     "esri/tasks/query",
+
+    "esri/geometry/Extent",
+
+    "esri/InfoTemplate",
 
     "dojo/domReady!",
 
@@ -58,11 +63,17 @@ define([
     SimpleLineSymbol,
     Color,
     Graphic,
+    graphicsUtils,
+
 
     BufferParameters,
     GeometryService,
     QueryTask,
-    Query
+    Query,
+
+    Extent,
+
+    InfoTemplate
 
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -80,7 +91,7 @@ define([
 
             // Create map
             this.map = new Map("mapDiv", {
-                basemap: "hybrid",
+                basemap: "topo",
                 center: [-122.69, 45.52],
                 zoom: 3
             });
@@ -94,8 +105,13 @@ define([
 
         addLayersToMap: function() {
             console.log("hello");
+            var infoTemplate = new InfoTemplate({
+                title: "${Name}",
+                content: "${*}"
+            });
             this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
-                id: "campSiteLayer"
+                id: "campSiteLayer",
+                infoTemplate: infoTemplate
             });
             this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,
                 5, null, this.selectionColor)));
@@ -123,9 +139,7 @@ define([
 
         },
 
-        drawBuffer: function(position, bufferRadius = 5) {
-            
-
+        drawBuffer: function(position, bufferRadius = 10) {
             var bufferParams = new BufferParameters();
             bufferParams.geometries = [position];
             bufferParams.distances = [bufferRadius];
@@ -134,6 +148,11 @@ define([
 
             this.geomService.buffer(bufferParams, lang.hitch(this, function(bufferGeoms){
                 console.log(bufferGeoms);
+                if(this.graphicsLayer == 'undefined' || this.graphicsLayer == null){
+                    this.graphicsLayer = new GraphicsLayer();
+                    this.map.addLayer(this.graphicsLayer);
+                }
+                this.graphicsLayer.clear();
                 // Query where layer intersects buffer grpaghic geometry
                 var queryTask = new QueryTask("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
                 var query = new Query();
@@ -144,7 +163,17 @@ define([
                 queryTask.execute(query, lang.hitch(this, function(results){
                     console.log(results);
 
-                    
+                    // mute layer
+                    this.campSiteLayer.hide();
+                    // Add points to graphics layer
+                    for(var index in results.features){
+                        var feature = results.features[index];
+                        var graphic = new Graphic(feature.geometry, new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
+                        this.graphicsLayer.add(graphic);
+                        on(graphic, "click", lang.hitch(this, function(event){
+                            console.log(event);
+                        }));
+                    }
                 }));
 
                 // Create buffer graphic
@@ -153,12 +182,9 @@ define([
                     new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, this.selectionColor, 2),
                     null
                 ));
-                if(this.graphicsLayer == 'undefined' || this.graphicsLayer == null){
-                    this.graphicsLayer = new GraphicsLayer();
-                    this.map.addLayer(this.graphicsLayer);
-                }
-                this.graphicsLayer.clear();
                 this.graphicsLayer.add(graphic);
+                var extent = graphicsUtils.graphicsExtent([graphic]);
+                this.map.setExtent(extent);
             }));
         }
     });
