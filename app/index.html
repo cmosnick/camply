@@ -10,7 +10,7 @@
     <!-- ArcGIS API for JavaScript CSS-->
     <link rel="stylesheet" href="//js.arcgis.com/3.10/js/esri/css/esri.css">
     <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" />
     <style>
     html,
@@ -40,8 +40,7 @@
         'dojo/dom',
         'widgets/CampsiteWidget.js'
     ], function(dom, CampsiteWidget) {
-        var widget = new CampsiteWidget({
-        });
+        var widget = new CampsiteWidget({});
         widget.startup();
     });
     </script>
@@ -69,25 +68,30 @@
             </div>
         </div>
     </div> -->
-
-
-
-    <div class="row-fluid main-container">
-        <div class="span12">
-            <h>TitleBar</h>
-        <div class="span12"></div>
-        <div class="row-fluid">
-            <div class="span8">
-                <div class="span7">
-                <div id="mapDiv"></div>
+    <div class="row title-row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <h1>TitleBar</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="span4">
-                <div id="campsite-widget-bar", data-dojo-attach-point="campsite-widget-bar" data-dojo-type="CampsiteWidget"></div>
+            </nav>
+        </div>
+    </div>
+    <div class="row row-map"">
+        <div class="col-md-8 nopadding map-column">
+            <div id="mapDiv"></div>
+        </div>
+        <div class="col-md-4 nopadding sidebar">
+            <div class="panel panel-default">
+                <div class="panel-heading">Panel heading</div>
+                <div class="panel-body">
+                    Panel content
+                </div>
             </div>
         </div>
     </div>
-        
 </body>
 
 </html>
