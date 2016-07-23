@@ -5,14 +5,35 @@
     padding: 0;
 }
 #search {
-    display: block;
-    position: absolute;
+    display: inline;
+    position: relative;
     z-index: 2;
-    top: 20px;
-    left: 74px;
+    top: 0px;
+    left: 0px;
 }
 
 .nopadding{
     padding: 0 !important;
     margin: 0 !important;
+}
+
+#locateButton {
+    display: inline;
+    position: relative;
+    top: -31px;
+    left: 25s0px;
+    z-index: 50;
+}
+
+div.widget-row{
+    position: absolute;
+    /*display: block;*/
+    top: 20px;
+    left: 75px;
+}
+
+div.outer-container{
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }

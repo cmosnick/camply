@@ -16,6 +16,7 @@ define([
     "esri/renderers/SimpleRenderer",
     "esri/symbols/SimpleMarkerSymbol",
     "esri/Color",
+    "esri/dijit/LocateButton",
 
     "dojo/domReady!",
 
@@ -37,7 +38,8 @@ define([
     FeatureLayer,
     SimpleRenderer,
     SimpleMarkerSymbol,
-    Color
+    Color,
+    LocateButton
 
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -58,10 +60,7 @@ define([
                 center: [-122.69, 45.52],
                 zoom: 3
             });
-            var search = new Search({
-              map: this.map
-            },"search");
-            search.startup();
+            
 
 
             // this.initBasemapButtons();
@@ -103,7 +102,19 @@ define([
         },
 
         initMapWidgets: function(){
-            
+            var search = new Search({
+              map: this.map
+            },"search");
+            search.startup();
+
+            var locate = new LocateButton({
+                map: this.map
+            }, "locateButton");
+            locate.startup();
+
+            on(locate, "click", lang.hitch(this, function(event){
+                
+            }))
         },
 
         createSidebar: function() {
