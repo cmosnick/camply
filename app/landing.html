@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" />
+ 
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Sign Up</title>
+    <link rel="shortcut icon" href="//esri.github.io/quickstart-map-js/images/favicon.ico">
+    <!-- ArcGIS API for JavaScript CSS-->
+    <link rel="stylesheet" href="//js.arcgis.com/3.10/js/esri/css/esri.css">
+    <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
+    <link rel="stylesheet" href="widgets/css/main.css" />
+
+    <style>
+    html,
+    body,
+    #mapDiv {
+        height: 100%;
+        width: 100%;
+    }
+    </style>
+    <!-- ArcGIS API for JavaScript library references -->
+    <script type="text/javascript">
+    var dojoConfig = {
+        async: true,
+        parseOnLoad: true,
+        packages: [{
+            name: "app",
+            location: location.pathname
+        }, {
+            name: "widget",
+            location: location.pathname.replace(/\/[^/]+$/, "./widgets")
+        }]
+    };
+    </script>
+    <script src="//js.arcgis.com/3.10compact"></script>
+    <script type="text/javascript">
+    require([
+        'dojo/dom',
+        'widgets/CampsiteWidget.js'
+    ], function(dom, CampsiteWidget) {
+        var widget = new CampsiteWidget({});
+        widget.startup();
+    });
+    </script>
+</head>
+
+<body class="background2">
+    
+    <!-- <div class="panel panel-primary panel-fixed">
+        <div class="panel-heading">
+            <h3 class="panel-title">Basemaps</h3>
+        </div>
+        <div class="panel-body">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnStreets" class="btn btn-default">Streets</button>
+                    <button id="btnSatellite" class="btn btn-default">Satellite</button>
+                    <button id="btnHybrid" class="btn btn-default">Hybrid</button>
+                    <button id="btnTopo" class="btn btn-default">Topo</button>
+                </div>
+            </div>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <button id="btnGray" class="btn btn-default">Gray</button>
+                    <button id="btnNatGeo" class="btn btn-default">National Geographic</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+<div class="formdiv" style="width:50%; margin-left:25%;margin-top:16%">
+    
+  <form>
+         <div class="coldiv" style="margin-bottom:25px ">
+             <p class="title">Welcome to SurveyParks2Me!</p>
+      </div>
+    <div class="coldiv">
+        <input type="text" id="fname" name="userName" placeholder="Where do you want to camp?">
+        <div class="coldiv">
+                <input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+        </div>
+<script type="text/javascript">
+$(function() {
+    $('input[name="daterange"]').daterangepicker();
+});
+</script>
+    
+    <input type="submit" id="lname" name="Search" value="Search"></div>
+      
+  
+   
+  </form>
+        </div>
+
+</body>
+
+</html>
