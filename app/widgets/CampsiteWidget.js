@@ -329,7 +329,7 @@ define([
                                 <label>Weather(today)</label>\
                                 <p>'+weatherjson.weather[0].description+'</p>\
                                 <label>Temperature(today)</label>\
-                                <p>'+weatherjson.main.temp+' °F</p>\
+                                <p>'+(weatherjson.main.temp*9/5 - 459.67)+' °F</p>\
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="https://maps.googleapis.com/maps/api/streetview?size=300x300&location=' + normalizedVal[1] + ',' + normalizedVal[0] + '&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
