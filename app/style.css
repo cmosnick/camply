@@ -5,7 +5,7 @@
     padding: 0;
 }
 #search {
-    display: inline;
+    /*display: inline;*/
     position: relative;
     z-index: 2;
     top: 0px;
@@ -18,7 +18,7 @@
 }
 
 #locateButton {
-    display: inline;
+    /*display: inline;*/
     position: relative;
     top: -32px;
     left: 250px;
