@@ -301,8 +301,19 @@ define([
                 console.log(result.wind.speed);
 
             });
-
-
+            
+            
+                            request.get(query1, {
+                    headers: {
+                        "X-Requested-With": "",
+                        "Access-Control-Allow-Origin": ""
+                    },
+                    content: {
+                        f: "json"
+                    }
+                }).then(lang.hitch(this, function(weatherjson) {
+                    weatherjson = JSON.parse(weatherjson);
+                                   console.log("test!"+weatherjson.wind.speed);
             var title = feature.attributes.Name;
             this.sidebarTitle.innerHTML = "";
             var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
@@ -318,9 +329,9 @@ define([
                                 <label>Address</label>\
                                 <p>123 ABC St, City, State 11111</p>\
                                 <label>Weather(today)</label>\
-                                <p>Cloudy</p>\
+                                <p>'+weatherjson.weather[0].description+'</p>\
                                 <label>Temperature(today)</label>\
-                                <p>74°F</p>\
+                                <p>'+weatherjson.main.temp+' °F</p>\
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
@@ -329,6 +340,14 @@ define([
             var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class:"styledbtn" }, this.parkDetail, "last");
             on(button, "click", lang.hitch(this, this.displayCampsites, feature));
             this.showPanel("park-detail");
+                }));
+            
+            
+            
+            
+
+
+
         },
 
         showPanel: function(panelId) {
