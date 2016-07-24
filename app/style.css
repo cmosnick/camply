@@ -60,3 +60,7 @@ span.back-button{
 #filterOptions{
     float: right;
 }
+
+span.weather-source{
+    font-size: 90%;
+}
