@@ -237,9 +237,9 @@ define([
                 }
             }).then(lang.hitch(this, function(results) {
                 // mute layer
-                this.campSiteLayer.hide();
+                // this.campSiteLayer.hide();
                 // Select points on campsite layer
-                this.campSiteLayer.clearSelection();
+                // this.campSiteLayer.clearSelection();
                 // TODO: add query for select features
                 // var query = new Query();
                 // var where = "OBJECTID in [" + oids.join(",") + "]";
@@ -325,13 +325,13 @@ define([
                 var dist = (feature.distance * 0.000621371);
                 var parkCardHtml = '<div class="parkcard">\
                                 <label>Distance</label>\
-                                <p>'+ dist.toPrecision(5) +' miles</p>\
+                                <p>'+ dist.toPrecision(3) +' miles</p>\
                                 <label>Address</label>\
                                 <p>123 ABC St, City, State 11111</p>\
                                 <label>Weather (today)</label>\
                                 <p>' + weatherjson.weather[0].description + '</p>\
                                 <label>Temperature (today)</label>\
-                                <p>' + (weatherjson.main.temp * 9 / 5 - 459.67).toPrecision(5) + ' °F</p>\
+                                <p>' + (weatherjson.main.temp * 9 / 5 - 459.67).toPrecision(3) + ' °F</p>\
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="https://maps.googleapis.com/maps/api/streetview?size=300x300&location=' + normalizedVal[1] + ',' + normalizedVal[0] + '&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
@@ -353,8 +353,12 @@ define([
                 }
 
                 var string = attributes.join(", ");
-              
-                domConstruct.create("p", {class: "tags", innerHTML: string}, this.parkDetail, "first");
+                if(attributes.length > 0){
+                    domConstruct.create("p", {class: "tags", innerHTML: string}, this.parkDetail, "first");
+                    domConstruct.create("label", {innerHTML: "Attributes"}, this.parkDetail, "first");
+
+                }
+                
                 this.showPanel("park-detail");
             }));
 
