@@ -11,11 +11,17 @@
     <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/dijit/calcite.css">
     <link rel="stylesheet" href="https://js.arcgis.com/3.17/esri/themes/calcite/esri/esri.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include Required Prerequisites -->
+    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css" /> -->
+    <!-- Include Date Range Picker -->
+    <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> -->
     <!-- Web Framework CSS - Bootstrap (getbootstrap.com) and Bootstrap-map-js (github.com/esri/bootstrap-map-js) -->
     <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" type="text/css" href="/widgets/css/main.css">
-    <!-- <link rel="stylesheet" href="//esri.github.io/bootstrap-map-js/src/css/bootstrapmap.css" /> -->
     <style>
     html,
     body,
@@ -40,6 +46,7 @@
     </script>
     <script src="https://js.arcgis.com/3.17"></script>
     <script type="text/javascript">
+    // $("#welcome-modal").appendTo("body").modal('show');
     require([
         'dojo/dom',
         'widgets/CampsiteWidget.js',
@@ -52,6 +59,9 @@
 </head>
 
 <body class="calcite">
+    <!-- <div class="modal fade "> -->
+    <!-- </div> -->
+    <!-- Actual page under modal -->
     <div class="outer-container">
         <div class="row title-row">
             <nav class="navbar navbar-inverse">
@@ -61,8 +71,7 @@
                     </div>
                     <div id="filterOptions">
                         Within
-                        <input class="" id="bufferSize" type="number" value="20">
-                        miles
+                        <input class="" id="bufferSize" type="number" value="20"> miles
                     </div>
                 </div>
             </nav>
@@ -141,7 +150,7 @@
                         </div>
                         <!-- List of campsites in a park -->
                         <div id="campsites-list" data-dojo-attach-point="campsitesList" class="hidden">
-                            <div class="parkcard">
+                            <!-- <div class="parkcard">
                                 <div style="float:none">
                                     <p class="parkname">Host</p>
                                     <p class="distance">Stardust</p>
@@ -221,13 +230,32 @@
                                     <p class="distance">444-444-4444</p>
                                 </div>
                                 <div style="clear: both;"></div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!-- <div id="welcome-modal" class="modal fade f_background">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            <p>One fine body&hellip;</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
 </body>
 
 </html>

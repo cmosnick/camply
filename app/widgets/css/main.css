@@ -71,7 +71,8 @@ background-image:url(../../images/3.jpg);
     background-size:cover;
     vertical-align:middle;
     padding: 0;
-height: auto
+height: auto;
+z-index: -1;
 }
 .coldiv {
 

@@ -5,6 +5,7 @@ define([
     'dojo/dom',
     'dojo/dom-construct',
     'dojo/_base/array',
+    'dojo/request',
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -46,6 +47,7 @@ define([
     dom,
     domConstruct,
     array,
+    request,
 
     _WidgetBase,
     _TemplatedMixin,
@@ -74,7 +76,7 @@ define([
 
     Extent,
 
-     
+
     InfoTemplate,
     webMercatorUtils
 
@@ -86,7 +88,7 @@ define([
         renderColor: new Color([255, 153, 51]),
         bufferValue: 20,
         panelIds: ["parks-list", "park-detail", "campsites-list"],
-
+        apiUrl: "//aaronp.esri.com:5000/api",
 
         constructor: function(options) {
             this.domNode = options.domNode || "campsite-widget-bar";
@@ -111,7 +113,7 @@ define([
             };
 
             this.sidebarTitle = dom.byId("sidebar-title");
-
+            this.selectedFeatures = {};
 
             this.inherited(arguments);
         },
@@ -139,9 +141,8 @@ define([
                 title: "${Name}",
                 content: "${*}"
             });
-            // this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
-
-            this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
+            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+            // this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
                 id: "campSiteLayer",
                 infoTemplate: infoTemplate,
                 outFields: ["*"],
@@ -201,8 +202,8 @@ define([
                 var query = new Query();
                 query.geometry = bufferGeoms[0];
                 query.outSpatialReference = this.map.spatialReference;
-                query.returnGeometry = true;
-                query.outFields = ["*"];
+                query.returnGeometry = false;
+                query.outFields = ["OBJECTID"];
                 queryTask.execute(query, lang.hitch(this, this.addFeaturesToMapAndSidebar));
 
                 // Create buffer graphic
@@ -218,44 +219,58 @@ define([
         },
 
         addFeaturesToMapAndSidebar: function(results) {
-            // console.log(results);
-
-            // mute layer
-            this.campSiteLayer.hide();
-            // Select points on campsite layer
-            this.campSiteLayer.clearSelection();
-            // TODO: add query for selct features
-            var query = new Query();
+            console.log(results);
+            // Use ids to get more complete results from aaron's api
+            var startingLoc = this.startingLocation.x + "," + this.startingLocation.y;
             var oids = array.map(results.features, function(feature) {
                 return feature.attributes.OBJECTID;
             });
-            var where = "OBJECTID in [" + oids.join(",") + "]";
-            // query.outFields = ["*"];
-            // this.campSiteLayer.selectFeatures(query);
-            this.clearParksList();
-            for (var index in results.features) {
-                var feature = results.features[index];
-                // Add features info to parks-list sidebar
-                var name = feature.attributes.Name;
-                var addr = feature.attributes.State;
-                var oid = feature.attributes.OBJECTID;
-                var parkCardHtml = '<div style="float:none">\
-                            <p class="parkname">' + name + '</p>\
-                            <p class="distance">3miles</p>\
-                        </div>\
-                        <div style="clear: both;"></div>\
-                        <div>\
-                            <p class="address">' + addr + '</p>\
-                        </div>\
-                        <div>\
-                            <p class="avalabile">5 campsites available</p>\
-                        </div>';
-                var parkCard = domConstruct.create("div", { id: oid, innerHTML: parkCardHtml, class: "parkcard" }, "parks-list", "last");
-                on(parkCard, "click", lang.hitch(this, this.goToParkInfo, feature));
-                // console.log("Added park ", oid);
-            }
-            // Make parks list panel appear
-            this.showPanel("parks-list");
+            var requestUrl = this.apiUrl + "/campsites/?startingLoc=" + startingLoc + "&fids=" + oids.join(",");
+            request.get(requestUrl, {
+                headers: {
+                    "X-Requested-With": "",
+                    "Access-Control-Allow-Origin": ""
+                },
+                content: {
+                    f: "json"
+                }
+            }).then(lang.hitch(this, function(results) {
+                // mute layer
+                this.campSiteLayer.hide();
+                // Select points on campsite layer
+                this.campSiteLayer.clearSelection();
+                // TODO: add query for select features
+                // var query = new Query();
+                // var where = "OBJECTID in [" + oids.join(",") + "]";
+                // query.outFields = ["*"];
+                // this.campSiteLayer.selectFeatures(query);
+                this.clearParksList();
+                results = JSON.parse(results);
+                for (var index in results.parks) {
+                    var park = results.parks[index];
+                    // Add features info to parks-list sidebar
+                    var name = park.attributes.Name;
+                    var addr = park.attributes.State;
+                    var oid = park.attributes.OBJECTID;
+                    var parkCardHtml = '<div style="float:none">\
+                                <p class="parkname">' + name + '</p>\
+                                <p class="distance">3miles</p>\
+                            </div>\
+                            <div style="clear: both;"></div>\
+                            <div>\
+                                <p class="address">' + addr + '</p>\
+                            </div>\
+                            <div>\
+                                <p class="avalabile">5 campsites available</p>\
+                            </div>';
+                    var parkCard = domConstruct.create("div", { id: oid, innerHTML: parkCardHtml, class: "parkcard" }, "parks-list", "last");
+                    on(parkCard, "click", lang.hitch(this, this.goToParkInfo, park));
+
+                    // console.log("Added park ", oid);
+                }
+                // Make parks list panel appear
+                this.showPanel("parks-list");
+            }));
         },
 
         clearParksList: function() {
@@ -270,13 +285,12 @@ define([
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
             //var geom = webMercatorUtils.geographicToWebMercator(geometry);
-                          var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
-             console.log(normalizedVal); //returns 19.226, 11.789
-                        console.log(geometry.x);
-                        console.log(geometry);
-            
-            
-            
+            var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
+            console.log(normalizedVal); //returns 19.226, 11.789
+            console.log(geometry.x);
+            console.log(geometry);
+
+
             var title = feature.attributes.Name;
             this.sidebarTitle.innerHTML = "";
             var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
@@ -298,9 +312,10 @@ define([
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
-                                <input style=" margin-top:30px" type="submit" value="5 campsites available">\
                             </div>';
             this.parkDetail.innerHTML = parkCardHtml;
+            var button = domConstruct.create("input", { style: "margin-top:30px", value: "5 campsites available" }, this.parkDetail, "last");
+            on(button, "click", lang.hitch(this, this.displayCampsites, feature));
             this.showPanel("park-detail");
         },
 
@@ -324,6 +339,59 @@ define([
         selectSingleFeature: function(event) {
             var feature = event.graphic;
             this.goToParkInfo(feature);
+        },
+
+        displayCampsites: function(park, event) {
+            console.log(park.campsites);
+            this.sidebarTitle.innerHTML = "";
+            var title = "Choose an available campsite";
+            var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
+            var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
+            on(span, "click", lang.hitch(this, function(event) {
+                this.showPanel('park-detail');
+            }));
+            // Get user information
+
+            for (var index in park.campsites) {
+                var campsite = park.campsites[index];
+                // TODO: clear list
+                var numPersons = campsite.availablePersons;
+                var hostId = campsite.hostID;
+                var requestUrl = this.apiUrl + "/users/" + hostId;
+                request.get(requestUrl, {
+                    headers: {
+                        "X-Requested-With": "",
+                        "Access-Control-Allow-Origin": ""
+                    },
+                    content: {
+                        f: "json"
+                    }
+                }).then(lang.hitch(this, function(userInfo){
+                    userInfo = JSON.parse(userInfo);
+                    var startDate = new Date(campsite.startDate);
+                    var endDate = new Date(campsite.endDate);
+
+                    var startString = (startDate.getDay()) + "/" + (startDate.getMonth()+1)+"/" +(startDate.getYear());
+                    var endString = (endDate.getDay()) + "/" + (endDate.getMonth()+1)+"/" +(endDate.getYear());
+                    var campSiteHtml = '<div style="float:none"><p class="parkname">'+park.attributes.Name+'</p>\
+                               <p class="distance">'+userInfo.username+'</p></div>\
+                               <div style="clear: both;"></div>\
+                               <div style="float:none"><p class="parkname">Available time</p>\
+                               <p class="distance">'+startString + "-" + endString+'</p></div>\
+                               <div style="clear: both;"></div>\
+                               <div style="float:none"><p class="parkname">Number of people</p>\
+                               <p class="distance">' + numPersons + '</p></div>\
+                               <div style="clear: both;"></div>\
+                               <div style="float:none"><p class="parkname">Email</p>\
+                               <p class="distance">'+userInfo.email+'</p></div>\
+                               <div style="clear: both;"></div>\
+                               <div style="float:none"><p class="parkname">Phone number</p>\
+                               <p class="distance">'+userInfo.phone+'</p></div>\
+                               <div style="clear: both;"></div>';
+                   var parkCard = domConstruct.create("div", { id: campsite.id, innerHTML: campSiteHtml, class: "parkcard" }, "campsites-list", "last"); 
+                }));
+            }
+            this.showPanel("campsites-list");
         }
     });
 });
