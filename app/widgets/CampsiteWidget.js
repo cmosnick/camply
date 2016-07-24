@@ -259,9 +259,13 @@ define([
 
 
 
-
             var title = feature.attributes.Name;
-            this.sidebarTitle.innerHTML = '<span class="glyphicon glyphicon-menu-left back-button"></span>' + title;
+            this.sidebarTitle.innerHTML = "";
+            var span = domConstruct.create("span", {class: "glyphicon glyphicon-menu-left back-button"}, this.sidebarTitle, "first");
+            var div = domConstruct.create("div", {innerHTML: title}, this.sidebarTitle, "last");
+            on(span, "click", lang.hitch(this, function(event){
+                this.showPanel('parks-list');
+            }));
             // Format park detail page for specific park
             var parkCardHtml = '<div class="parkcard">\
                                 <p class="tags">Tag1 Tag2</p>\
