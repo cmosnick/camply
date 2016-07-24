@@ -9,7 +9,7 @@ input, select {
     box-sizing: border-box;
 }
 
-input {
+input.styled{
     
     background-color: #4CAF50;
     color: white;
@@ -38,7 +38,7 @@ input {
 }
 
 
-input:hover {
+input.styled:hover {
     background-color: #45a049;
 }
 form{}

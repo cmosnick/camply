@@ -136,7 +136,9 @@ define([
                 title: "${Name}",
                 content: "${*}"
             });
-            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+            // this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+
+            this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
                 id: "campSiteLayer",
                 infoTemplate: infoTemplate,
                 outFields: ["*"],
