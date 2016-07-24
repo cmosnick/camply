@@ -92,6 +92,7 @@ define([
             this.parksList = dom.byId("parks-list");
             this.parkDetail = dom.byId("park-detail");
             this.campsitesList = dom.byId("campsites-list");
+            this.bufferInput = dom.byId("bufferSize");
 
             this.panels = {
                 "parks-list": {
@@ -157,6 +158,11 @@ define([
             }, "search");
             search.startup();
 
+            on(search, "select-result", lang.hitch(this, function(event) {
+                var feature = event.result;
+                this.drawbuffer(feature.geometry);
+            }));
+
             var locate = new LocateButton({
                 map: this.map
             }, "locateButton");
@@ -172,7 +178,9 @@ define([
 
         },
 
-        drawBuffer: function(position, bufferRadius = 20) {
+        drawBuffer: function(position) {
+            this.startingLocation = position;
+            var bufferRadius = this.bufferInput.value;
             var bufferParams = new BufferParameters();
             bufferParams.geometries = [position];
             bufferParams.distances = [bufferRadius];
@@ -187,7 +195,7 @@ define([
                 }
                 this.graphicsLayer.clear();
                 // Query where layer intersects buffer grpaghic geometry
-                var queryTask = new QueryTask("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0");
+                var queryTask = new QueryTask("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0");
                 var query = new Query();
                 query.geometry = bufferGeoms[0];
                 query.outSpatialReference = this.map.spatialReference;
@@ -259,7 +267,7 @@ define([
             console.log("Going to park info: ", feature.attributes.OBJECTID);
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
-
+            
 
 
             var title = feature.attributes.Name;
