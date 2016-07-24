@@ -4,6 +4,7 @@ define([
     'dojo/on',
     'dojo/dom',
     'dojo/dom-construct',
+    'dojo/_base/array',
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -44,6 +45,7 @@ define([
     on,
     dom,    
     domConstruct,
+    array,
 
     _WidgetBase,
     _TemplatedMixin,
@@ -209,7 +211,14 @@ define([
             this.campSiteLayer.hide();
             // Select points on campsite layer
             this.campSiteLayer.clearSelection();
-            this.campSiteLayer.selectFeatures(results.features);
+            // TODO: add query for selct features
+            var query = new Query();
+            var oids = array.map(results.features, function(feature){
+                return feature.attributes.OBJECTID;
+            });
+            var where = "OBJECTID in [" + oids.join(",") + "]";
+            // query.outFields = ["*"];
+            // this.campSiteLayer.selectFeatures(query);
             this.clearParksList();
             for(var index in results.features){
                 var feature = results.features[index];
@@ -248,6 +257,9 @@ define([
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
 
+
+
+
             var title = feature.attributes.Name;
             this.sidebarTitle.innerHTML = '<span class="glyphicon glyphicon-menu-left back-button"></span>' + title;
             // Format park detail page for specific park
@@ -273,11 +285,14 @@ define([
         showPanel: function(panelId){
             for(var id in this.panels){
                 var panel = this.panels[id].node;
-                if(id == panelId && panel.classList.contains("hidden")){
+                if(id == panelId ){
                     if(this.panels[id].sidebarHTML){
                         this.sidebarTitle.innerHTML = this.panels[id].sidebarHTML;
                     }
-                    panel.classList.remove("hidden");
+                    if(panel.classList.contains("hidden")){
+                        panel.classList.remove("hidden");
+                    }
+                    // panel.refresh();
                 } else {
                     panel.classList.add("hidden");
                 }
