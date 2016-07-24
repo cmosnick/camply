@@ -107,7 +107,6 @@ define([
                     node: this.parkDetail
                 },
                 "campsites-list": {
-                    sidebarHTML: "Choose an available campsite",
                     node: this.campsitesList
                 }
             };
