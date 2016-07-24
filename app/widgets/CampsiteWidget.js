@@ -6,6 +6,7 @@ define([
     'dojo/dom-construct',
     'dojo/_base/array',
     'dojo/request',
+    "dojo/promise/all",
 
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -48,6 +49,7 @@ define([
     domConstruct,
     array,
     request,
+    all,
 
     _WidgetBase,
     _TemplatedMixin,
@@ -161,8 +163,8 @@ define([
             search.startup();
 
             on(search, "select-result", lang.hitch(this, function(event) {
-                var feature = event.result;
-                this.drawbuffer(feature.geometry);
+                var feature = event.result.feature;
+                this.drawBuffer(feature.geometry);
             }));
 
             var locate = new LocateButton({
