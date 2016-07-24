@@ -278,7 +278,13 @@ var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
             var query2 ="https://maps.googleapis.com/maps/api/streetview?size=300x300&location="+normalizedVal[1]+","+normalizedVal[0]+"&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc";
                         console.log("http://api.openweathermap.org/data/2.5/weather?lat="+normalizedVal[1]+"&lon="+normalizedVal[0]+"39&appid=351fa6847fafdb396d6a1c0ab26254ed");
                          console.log(query2);
+      $.getJSON(query1, function(result){
+            console.log(result.weather[0].description);
+          console.log(result.main.temp);
+            console.log(result.wind.speed);
 
+        });
+            
             
             
             var title = feature.attributes.Name;
