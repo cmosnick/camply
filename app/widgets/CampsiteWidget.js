@@ -270,11 +270,15 @@ define([
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
             //var geom = webMercatorUtils.geographicToWebMercator(geometry);
-                          var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
-             console.log(normalizedVal); //returns 19.226, 11.789
-                        console.log(geometry.x);
-                        console.log(geometry);
-            
+var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
+ console.log(normalizedVal); //returns 19.226, 11.789
+            console.log(normalizedVal[0]);
+            console.log(normalizedVal[1]);
+            var query1 ="http://api.openweathermap.org/data/2.5/weather?lat="+normalizedVal[1]+"&lon="+normalizedVal[0]+"39&appid=351fa6847fafdb396d6a1c0ab26254ed";
+            var query2 ="https://maps.googleapis.com/maps/api/streetview?size=300x300&location="+normalizedVal[1]+","+normalizedVal[0]+"&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc";
+                        console.log("http://api.openweathermap.org/data/2.5/weather?lat="+normalizedVal[1]+"&lon="+normalizedVal[0]+"39&appid=351fa6847fafdb396d6a1c0ab26254ed");
+                         console.log(query2);
+
             
             
             var title = feature.attributes.Name;
