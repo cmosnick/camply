@@ -354,8 +354,14 @@ define([
 
                 var string = attributes.join(", ");
               
-                domConstruct.create("p", {class: "tags", innerHTML: string}, this.parkDetail, "first");
+                             domConstruct.create("",
+                            {
+                                background: "image/1.jpg",
+                                width: 20px,
+                                height: 20px,
+                            },this.parkDetail, "first");
                 this.showPanel("park-detail");
+   
             }));
 
 
