@@ -146,6 +146,8 @@ define([
             this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.renderColor)));
             this.campSiteLayer.setSelectionSymbol(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
             this.map.addLayer(this.campSiteLayer);
+
+            on(this.campSiteLayer, "click", lang.hitch(this, this.selectSingleFeature));
         },
 
         initMapWidgets: function(){
@@ -301,6 +303,11 @@ define([
                     panel.classList.add("hidden");
                 }
             }
+        },
+
+        selectSingleFeature: function(event) {
+            var feature = event.graphic;
+            this.goToParkInfo(feature);
         }
     });
 });
