@@ -142,14 +142,14 @@ define([
                 title: "${Name}",
                 content: "${*}"
             });
-            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
+            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks2/MapServer/0", {
                 id: "campSiteLayer",
                 infoTemplate: infoTemplate,
                 outFields: ["*"],
                 mode: FeatureLayer.MODE_ONDEMAND
             });
-            this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.renderColor)));
-            this.campSiteLayer.setSelectionSymbol(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
+            // this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.renderColor)));
+            // this.campSiteLayer.setSelectionSymbol(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
             this.map.addLayer(this.campSiteLayer);
 
             on(this.campSiteLayer, "click", lang.hitch(this, this.selectSingleFeature));
@@ -252,9 +252,10 @@ define([
                     var name = park.attributes.Name;
                     var addr = park.attributes.State;
                     var oid = park.attributes.OBJECTID;
+                    var dist = park.distance * 0.000621371;
                     var parkCardHtml = '<div style="float:none">\
                                 <p class="parkname">' + name + '</p>\
-                                <p class="distance">3miles</p>\
+                                <p class="distance">'+dist.toPrecision(3)+' miles</p>\
                             </div>\
                             <div style="clear: both;"></div>\
                             <div>\
