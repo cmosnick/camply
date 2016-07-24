@@ -308,7 +308,7 @@ var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
-                                <input style=" margin-top:30px" type="submit" value="5 campsites available">\
+                                <input style=" width:100%; background-color:#4CAF50; color:white; margin-top:30px" type="submit" value="5 campsites available">\
                             </div>';
             this.parkDetail.innerHTML = parkCardHtml;
             this.showPanel("park-detail");
