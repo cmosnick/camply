@@ -87,18 +87,21 @@ define([
         constructor: function(options){
             this.domNode = options.domNode || "campsite-widget-bar";
 
+            this.parksList = dom.byId("parks-list");
+            this.parkDetail = dom.byId("park-detail");
+            this.campsitesList = dom.byId("campsites-list");
+
             this.panels = {
                 "parks-list": {
                     sidebarHTML: "Selected Parks",
-                    node: dom.byId("parks-list")
+                    node: this.parksList
                 },
                 "park-detail" : {
-                    sidebarHTML: "",
-                    node: dom.byId("park-detail")
+                    node: this.parkDetail
                 },
                 "campsites-list": {
                     sidebarHTML: "Choose an available campsite",
-                    node: dom.byId("campsites-list")
+                    node: this.campsitesList
                 }
             };
 
@@ -226,7 +229,7 @@ define([
                             <p class="avalabile">5 campsites available</p>\
                         </div>';
                 var parkCard = domConstruct.create("div", {id: oid, innerHTML: parkCardHtml, class: "parkcard"}, "parks-list", "last");
-                on(parkCard, "click", lang.hitch(this, this.goToParkInfo, oid));
+                on(parkCard, "click", lang.hitch(this, this.goToParkInfo, feature));
                 console.log("Added park ", oid);
             }
             // Make parks list panel appear
@@ -240,9 +243,30 @@ define([
             });
         },
 
-        goToParkInfo: function(parkId, event){
-            console.log("Going to park info: ", parkId);
+        goToParkInfo: function(feature, event){
+            console.log("Going to park info: ", feature.attributes.OBJECTID);
+            // TODO: get feature, get weather, driving distance, etc
+            var geometry = feature.geometry;
 
+            var title = feature.attributes.Name;
+            this.sidebarTitle.innerHTML = '<span class="glyphicon glyphicon-menu-left back-button"></span>' + title;
+            // Format park detail page for specific park
+            var parkCardHtml = '<div class="parkcard">\
+                                <p class="tags">Tag1 Tag2</p>\
+                                <label>Distance</label>\
+                                <p>3 miles</p>\
+                                <label>Address</label>\
+                                <p>123 ABC St, City, State 11111</p>\
+                                <label>Weather(today)</label>\
+                                <p>Cloudy</p>\
+                                <label>Temperature(today)</label>\
+                                <p>74°F</p>\
+                                <label>Gallery</label>\
+                                <div>\
+                                    <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
+                                <input style=" margin-top:30px" type="submit" value="5 campsites available">\
+                            </div>';
+            this.parkDetail.innerHTML = parkCardHtml;
             this.showPanel("park-detail");
         },
 
@@ -250,7 +274,9 @@ define([
             for(var id in this.panels){
                 var panel = this.panels[id].node;
                 if(id == panelId && panel.classList.contains("hidden")){
-                    this.sidebarTitle.innerHTML = this.panels[id].sidebarHTML;
+                    if(this.panels[id].sidebarHTML){
+                        this.sidebarTitle.innerHTML = this.panels[id].sidebarHTML;
+                    }
                     panel.classList.remove("hidden");
                 } else {
                     panel.classList.add("hidden");

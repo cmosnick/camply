@@ -50,3 +50,7 @@ div.sidebar > div.panel{
 nav.navbar.navbar-inverse{
     margin-bottom: 0px;
 }
+
+span.back-button{
+    float: left;
+}
