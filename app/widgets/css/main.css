@@ -160,3 +160,5 @@ tr:nth-child(even){background-color: #f2f2f2}
     background-color: white;
     color: #4CAF50;
 }
+
+#bufferSize{padding: 0; width:35px;background-color:#4CAF50; color:white}
