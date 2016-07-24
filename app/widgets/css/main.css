@@ -123,3 +123,7 @@ text-align: center;}
 .btncontainer{float: left;}
 .sidebar{   height: 100%;}
 .panel{overflow: auto; }
+.navbar {height: 45px;
+min-height: 45px;}
+h1{font-size: 22px;
+    margin-top: 10px;}
