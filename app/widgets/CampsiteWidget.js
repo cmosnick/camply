@@ -82,9 +82,29 @@ define([
         renderColor: new Color([255, 153, 51]),
         bufferValue: 20,
         panelIds: ["parks-list", "park-detail", "campsites-list"],
+        
 
         constructor: function(options){
             this.domNode = options.domNode || "campsite-widget-bar";
+
+            this.panels = {
+                "parks-list": {
+                    sidebarHTML: "Selected Parks",
+                    node: dom.byId("parks-list")
+                },
+                "park-detail" : {
+                    sidebarHTML: "",
+                    node: dom.byId("park-detail")
+                },
+                "campsites-list": {
+                    sidebarHTML: "Choose an available campsite",
+                    node: dom.byId("campsites-list")
+                }
+            };
+
+            this.sidebarTitle = dom.byId("sidebar-title");
+
+
             this.inherited(arguments);
         },
 
@@ -206,29 +226,31 @@ define([
                             <p class="avalabile">5 campsites available</p>\
                         </div>';
                 var parkCard = domConstruct.create("div", {id: oid, innerHTML: parkCardHtml, class: "parkcard"}, "parks-list", "last");
-                on(parkCard, "click", lang.hitch(this, this.goToParkInfo(parkCard.id)));
+                on(parkCard, "click", lang.hitch(this, this.goToParkInfo, oid));
+                console.log("Added park ", oid);
             }
+            // Make parks list panel appear
+            this.showPanel("parks-list");
         },
 
         clearParksList: function() {
             console.log("about to clear parks list");
             dojo.query(".parkcard", this.parksList).forEach(function(parkCard){
                 domConstruct.destroy(parkCard);
-            })
+            });
         },
 
-        goToParkInfo: function(parkId){
+        goToParkInfo: function(parkId, event){
             console.log("Going to park info: ", parkId);
 
-
-            // this.showPanel("park-detail");
+            this.showPanel("park-detail");
         },
 
         showPanel: function(panelId){
-            for(var index in this.panelIds){
-                var id = this.panelIds[index];
-                var panel = document.getElementById(id);
+            for(var id in this.panels){
+                var panel = this.panels[id].node;
                 if(id == panelId && panel.classList.contains("hidden")){
+                    this.sidebarTitle.innerHTML = this.panels[id].sidebarHTML;
                     panel.classList.remove("hidden");
                 } else {
                     panel.classList.add("hidden");
