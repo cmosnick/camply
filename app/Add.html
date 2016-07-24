@@ -82,8 +82,9 @@
                 </div>
                 <label for="sel1">
                     <br>Where is your campsite?</label>
-                <select class="form-control" style="background-color: #4CAF50;
-    color: white;" id="sel1">
+                <select class="form-control" style="background-color: white;
+                 color: #4CAF50; width:250px; margin-left:auto;margin-right:auto;" id="sel1">
+                    <option value="" disabled selected>Select from park list</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -91,23 +92,28 @@
                 </select>
                 <div class="coldiv">
                     <label for="sel1">When is it available?</label>
-                    <input class="styled" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
-                    <script type="text/javascript">
-                    $(function() {
-                        $('input[name="daterange" class="styled"]').daterangepicker();
-                    });
-                    </script>
+                    <div>
+                        <input class="styled" type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+                        <script type="text/javascript">
+                        $(function() {
+                            $('input[name="daterange" class="styled"]').daterangepicker();
+                        });
+                        </script>
+                    </div>
                 </div>
                 <div class="coldiv">
-                    <label for="sel1">How many people can be contained?</label>
+                    <div>
+                        <label for="sel1">How many people can be contained?</label>
+                    </div>
                     <input class="styled" type="number" placeholder="3">
                     <div class="coldiv">
-                        <input class="styled" type="submit" value="Submit">
+                        <input class="styledbtn" type="submit" value="Submit">
+                    </div>
+                    <div class="coldiv">
                         <a>Cancel</a></div>
             </form>
             </div>
         </div>
-    </div>
 </body>
 
 </html>

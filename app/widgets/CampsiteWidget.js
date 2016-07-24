@@ -322,16 +322,16 @@ define([
                     this.showPanel('parks-list');
                 }));
                 // Format park detail page for specific park
+                var dist = (feature.distance * 0.000621371);
                 var parkCardHtml = '<div class="parkcard">\
-                                <p class="tags">Tag1 Tag2</p>\
                                 <label>Distance</label>\
-                                <p>3 miles</p>\
+                                <p>'+ dist.toPrecision(5) +' miles</p>\
                                 <label>Address</label>\
                                 <p>123 ABC St, City, State 11111</p>\
-                                <label>Weather(today)</label>\
+                                <label>Weather (today)</label>\
                                 <p>' + weatherjson.weather[0].description + '</p>\
-                                <label>Temperature(today)</label>\
-                                <p>' + (weatherjson.main.temp * 9 / 5 - 459.67) + ' °F</p>\
+                                <label>Temperature (today)</label>\
+                                <p>' + (weatherjson.main.temp * 9 / 5 - 459.67).toPrecision(5) + ' °F</p>\
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="https://maps.googleapis.com/maps/api/streetview?size=300x300&location=' + normalizedVal[1] + ',' + normalizedVal[0] + '&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
@@ -339,6 +339,22 @@ define([
                 this.parkDetail.innerHTML = parkCardHtml;
                 var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class: "styledbtn" }, this.parkDetail, "last");
                 on(button, "click", lang.hitch(this, this.displayCampsites, feature));
+
+
+                // Get other ammenities
+                var pets = (feature.attributes.Pets != 'Unknown') ? feature.attributes.Pets: false;
+                var water = (feature.attributes.Drinking_Water != 'Unknown') ? feature.attributes.Drinking_Water: false;
+                var attributes = [];
+                if(pets && pets == "PA"){
+                    attributes.push("Pets Allowed");
+                }
+                if(water && water == "DW"){
+                    attributes.push("Drinking Water");
+                }
+
+                var string = attributes.join(", ");
+              
+                domConstruct.create("p", {class: "tags", innerHTML: string}, this.parkDetail, "first");
                 this.showPanel("park-detail");
             }));
 
