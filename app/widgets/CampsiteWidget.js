@@ -292,59 +292,59 @@ define([
             console.log(normalizedVal[0]);
             console.log(normalizedVal[1]);
             var query1 = "http://api.openweathermap.org/data/2.5/weather?lat=" + normalizedVal[1] + "&lon=" + normalizedVal[0] + "39&appid=351fa6847fafdb396d6a1c0ab26254ed";
-            var query2 = "https://maps.googleapis.com/maps/api/streetview?size=300x300&location=" + normalizedVal[1] + "," + normalizedVal[0] + "&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc";
-            console.log("http://api.openweathermap.org/data/2.5/weather?lat=" + normalizedVal[1] + "&lon=" + normalizedVal[0] + "39&appid=351fa6847fafdb396d6a1c0ab26254ed");
-            console.log(query2);
-            $.getJSON(query1, function(result) {
-                console.log(result.weather[0].description);
-                console.log(result.main.temp);
-                console.log(result.wind.speed);
+            // var query2 = "https://maps.googleapis.com/maps/api/streetview?size=300x300&location=" + normalizedVal[1] + "," + normalizedVal[0] + "&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc";
+            // console.log("http://api.openweathermap.org/data/2.5/weather?lat=" + normalizedVal[1] + "&lon=" + normalizedVal[0] + "39&appid=351fa6847fafdb396d6a1c0ab26254ed");
+            // console.log(query2);
+            // $.getJSON(query1, function(result) {
+            //     console.log(result.weather[0].description);
+            //     console.log(result.main.temp);
+            //     console.log(result.wind.speed);
 
-            });
-            
-            
-                            request.get(query1, {
-                    headers: {
-                        "X-Requested-With": "",
-                        "Access-Control-Allow-Origin": ""
-                    },
-                    content: {
-                        f: "json"
-                    }
-                }).then(lang.hitch(this, function(weatherjson) {
-                    weatherjson = JSON.parse(weatherjson);
-                                   console.log("test!"+weatherjson.wind.speed);
-            var title = feature.attributes.Name;
-            this.sidebarTitle.innerHTML = "";
-            var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
-            var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
-            on(span, "click", lang.hitch(this, function(event) {
-                this.showPanel('parks-list');
-            }));
-            // Format park detail page for specific park
-            var parkCardHtml = '<div class="parkcard">\
+            // });
+
+
+            request.get(query1, {
+                headers: {
+                    "X-Requested-With": "",
+                    "Access-Control-Allow-Origin": ""
+                },
+                content: {
+                    f: "json"
+                }
+            }).then(lang.hitch(this, function(weatherjson) {
+                weatherjson = JSON.parse(weatherjson);
+                console.log("test!" + weatherjson.wind.speed);
+                var title = feature.attributes.Name;
+                this.sidebarTitle.innerHTML = "";
+                var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
+                var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
+                on(span, "click", lang.hitch(this, function(event) {
+                    this.showPanel('parks-list');
+                }));
+                // Format park detail page for specific park
+                var parkCardHtml = '<div class="parkcard">\
                                 <p class="tags">Tag1 Tag2</p>\
                                 <label>Distance</label>\
                                 <p>3 miles</p>\
                                 <label>Address</label>\
                                 <p>123 ABC St, City, State 11111</p>\
                                 <label>Weather(today)</label>\
-                                <p>'+weatherjson.weather[0].description+'</p>\
+                                <p>' + weatherjson.weather[0].description + '</p>\
                                 <label>Temperature(today)</label>\
-                                <p>'+(weatherjson.main.temp*9/5 - 459.67)+' °F</p>\
+                                <p>' + (weatherjson.main.temp * 9 / 5 - 459.67) + ' °F</p>\
                                 <label>Gallery</label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="https://maps.googleapis.com/maps/api/streetview?size=300x300&location=' + normalizedVal[1] + ',' + normalizedVal[0] + '&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
                             </div>';
-            this.parkDetail.innerHTML = parkCardHtml;
-            var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class:"styledbtn" }, this.parkDetail, "last");
-            on(button, "click", lang.hitch(this, this.displayCampsites, feature));
-            this.showPanel("park-detail");
-                }));
-            
-            
-            
-            
+                this.parkDetail.innerHTML = parkCardHtml;
+                var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class: "styledbtn" }, this.parkDetail, "last");
+                on(button, "click", lang.hitch(this, this.displayCampsites, feature));
+                this.showPanel("park-detail");
+            }));
+
+
+
+
 
 
 
