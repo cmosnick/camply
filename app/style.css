@@ -18,8 +18,9 @@
 }
 
 #locateButton {
-    /*display: inline;*/
+    display:inherit !important ;
     position: relative;
+    
     top: -32px;
     left: 250px;
     z-index: 50;
