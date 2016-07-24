@@ -90,7 +90,7 @@ define([
         renderColor: new Color([255, 153, 51]),
         bufferValue: 20,
         panelIds: ["parks-list", "park-detail", "campsites-list"],
-        apiUrl: "//aaronp.esri.com:5000/api",
+        apiUrl: "http://dev002023.esri.com:5000/api",
 
         constructor: function(options) {
             this.domNode = options.domNode || "campsite-widget-bar";
@@ -143,7 +143,6 @@ define([
                 content: "${*}"
             });
             this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
-                // this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
                 id: "campSiteLayer",
                 infoTemplate: infoTemplate,
                 outFields: ["*"],
@@ -245,7 +244,7 @@ define([
                 // var where = "OBJECTID in [" + oids.join(",") + "]";
                 // query.outFields = ["*"];
                 // this.campSiteLayer.selectFeatures(query);
-                this.clearParksList();
+                this.clearParksList(this.parksList);
                 results = JSON.parse(results);
                 for (var index in results.parks) {
                     var park = results.parks[index];
@@ -262,7 +261,7 @@ define([
                                 <p class="address">' + addr + '</p>\
                             </div>\
                             <div>\
-                                <p class="avalabile">5 campsites available</p>\
+                                <p class="avalabile">Available Campsites</p>\
                             </div>';
                     var parkCard = domConstruct.create("div", { id: oid, innerHTML: parkCardHtml, class: "parkcard" }, "parks-list", "last");
                     on(parkCard, "click", lang.hitch(this, this.goToParkInfo, park));
@@ -274,9 +273,9 @@ define([
             }));
         },
 
-        clearParksList: function() {
+        clearParksList: function(list) {
             // console.log("about to clear parks list");
-            dojo.query(".parkcard", this.parksList).forEach(function(parkCard) {
+            dojo.query(".parkcard", list).forEach(function(parkCard) {
                 domConstruct.destroy(parkCard);
             });
         },
@@ -328,16 +327,16 @@ define([
                                 <p>'+ dist.toPrecision(3) +' miles</p>\
                                 <label>Address</label>\
                                 <p>123 ABC St, City, State 11111</p>\
-                                <label>Weather (today)</label>\
+                                <label>Weather (today) <span class="weather-source">from Weather.com&reg;</span></label>\
                                 <p>' + weatherjson.weather[0].description + '</p>\
-                                <label>Temperature (today)</label>\
+                                <label>Temperature (today) <span class="weather-source">from Weather.com&reg;</span></label>\
                                 <p>' + (weatherjson.main.temp * 9 / 5 - 459.67).toPrecision(3) + ' °F</p>\
-                                <label>Gallery</label>\
+                                <label>Gallery <span class="weather-source">from Google Maps&reg;</span></label>\
                                 <div>\
                                     <img style="width:30%; height:80px;margin-right:3%" src="https://maps.googleapis.com/maps/api/streetview?size=300x300&location=' + normalizedVal[1] + ',' + normalizedVal[0] + '&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
                             </div>';
                 this.parkDetail.innerHTML = parkCardHtml;
-                var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class: "styledbtn" }, this.parkDetail, "last");
+                var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "Available Campsites", class: "styledbtn" }, this.parkDetail, "last");
                 on(button, "click", lang.hitch(this, this.displayCampsites, feature));
 
 
@@ -399,6 +398,13 @@ define([
             var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
             var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
             on(span, "click", lang.hitch(this, function(event) {
+                this.sidebarTitle.innerHTML = "";
+                var title = park.attributes.Name;
+                var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
+                var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
+                on(span, "click", lang.hitch(this, function(event) {
+                    this.showPanel('parks-list');
+                }));
                 this.showPanel('park-detail');
             }));
             // Get user information
@@ -406,6 +412,7 @@ define([
             for (var index in park.campsites) {
                 var campsite = park.campsites[index];
                 // TODO: clear list
+                this.clearParksList(this.campsitesList);
                 var numPersons = campsite.availablePersons;
                 var hostId = campsite.hostID;
                 var requestUrl = this.apiUrl + "/users/" + hostId;
@@ -421,9 +428,10 @@ define([
                     userInfo = JSON.parse(userInfo);
                     var startDate = new Date(campsite.startDate);
                     var endDate = new Date(campsite.endDate);
-
                     var startString = (startDate.getDay()) + "/" + (startDate.getMonth() + 1) + "/" + (startDate.getYear());
                     var endString = (endDate.getDay()) + "/" + (endDate.getMonth() + 1) + "/" + (endDate.getYear());
+                    
+                    var emailLink = "mailto:"+userInfo.email+"?Subject=" + encodeURIComponent("Camply Site " + park.attributes.Name);
                     var campSiteHtml = '<div style="float:none"><p class="parkname">' + park.attributes.Name + '</p>\
                                <p class="distance">' + userInfo.username + '</p></div>\
                                <div style="clear: both;"></div>\
@@ -434,7 +442,7 @@ define([
                                <p class="distance">' + numPersons + '</p></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Email</p>\
-                               <p class="distance">' + userInfo.email + '</p></div>\
+                               <a href='+emailLink+' target="_top" class="distance">' + userInfo.email + '</a></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Phone number</p>\
                                <p class="distance">' + userInfo.phone + '</p></div>\
