@@ -43,7 +43,7 @@ define([
     declare,
     lang,
     on,
-    dom,    
+    dom,
     domConstruct,
     array,
 
@@ -84,9 +84,9 @@ define([
         renderColor: new Color([255, 153, 51]),
         bufferValue: 20,
         panelIds: ["parks-list", "park-detail", "campsites-list"],
-        
 
-        constructor: function(options){
+
+        constructor: function(options) {
             this.domNode = options.domNode || "campsite-widget-bar";
 
             this.parksList = dom.byId("parks-list");
@@ -98,7 +98,7 @@ define([
                     sidebarHTML: "Selected Parks",
                     node: this.parksList
                 },
-                "park-detail" : {
+                "park-detail": {
                     node: this.parkDetail
                 },
                 "campsites-list": {
@@ -123,7 +123,7 @@ define([
                 center: [-122.69, 45.52],
                 zoom: 3
             });
-            
+
             this.geomService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
             this.addLayersToMap();
@@ -132,7 +132,6 @@ define([
         },
 
         addLayersToMap: function() {
-            console.log("hello");
             var infoTemplate = new InfoTemplate({
                 title: "${Name}",
                 content: "${*}"
@@ -150,10 +149,10 @@ define([
             on(this.campSiteLayer, "click", lang.hitch(this, this.selectSingleFeature));
         },
 
-        initMapWidgets: function(){
+        initMapWidgets: function() {
             var search = new Search({
-              map: this.map
-            },"search");
+                map: this.map
+            }, "search");
             search.startup();
 
             var locate = new LocateButton({
@@ -161,8 +160,8 @@ define([
             }, "locateButton");
             locate.startup();
 
-            on(locate, "locate", lang.hitch(this, function(event){
-                console.log(event);
+            on(locate, "locate", lang.hitch(this, function(event) {
+                // console.log(event);
                 this.drawBuffer(event.graphic.geometry);
             }))
         },
@@ -178,9 +177,9 @@ define([
             bufferParams.unit = GeometryService.UNIT_NAUTICAL_MILE;
             bufferParams.outSpatialReference = this.map.spatialReference;
 
-            this.geomService.buffer(bufferParams, lang.hitch(this, function(bufferGeoms){
-                console.log(bufferGeoms);
-                if(this.graphicsLayer == 'undefined' || this.graphicsLayer == null){
+            this.geomService.buffer(bufferParams, lang.hitch(this, function(bufferGeoms) {
+                // console.log(bufferGeoms);
+                if (this.graphicsLayer == 'undefined' || this.graphicsLayer == null) {
                     this.graphicsLayer = new GraphicsLayer();
                     this.map.addLayer(this.graphicsLayer);
                 }
@@ -207,7 +206,7 @@ define([
         },
 
         addFeaturesToMapAndSidebar: function(results) {
-            console.log(results);
+            // console.log(results);
 
             // mute layer
             this.campSiteLayer.hide();
@@ -215,46 +214,46 @@ define([
             this.campSiteLayer.clearSelection();
             // TODO: add query for selct features
             var query = new Query();
-            var oids = array.map(results.features, function(feature){
+            var oids = array.map(results.features, function(feature) {
                 return feature.attributes.OBJECTID;
             });
             var where = "OBJECTID in [" + oids.join(",") + "]";
             // query.outFields = ["*"];
             // this.campSiteLayer.selectFeatures(query);
             this.clearParksList();
-            for(var index in results.features){
+            for (var index in results.features) {
                 var feature = results.features[index];
                 // Add features info to parks-list sidebar
                 var name = feature.attributes.Name;
                 var addr = feature.attributes.State;
                 var oid = feature.attributes.OBJECTID;
                 var parkCardHtml = '<div style="float:none">\
-                            <p class="parkname">'+ name +'</p>\
+                            <p class="parkname">' + name + '</p>\
                             <p class="distance">3miles</p>\
                         </div>\
                         <div style="clear: both;"></div>\
                         <div>\
-                            <p class="address">'+ addr + '</p>\
+                            <p class="address">' + addr + '</p>\
                         </div>\
                         <div>\
                             <p class="avalabile">5 campsites available</p>\
                         </div>';
-                var parkCard = domConstruct.create("div", {id: oid, innerHTML: parkCardHtml, class: "parkcard"}, "parks-list", "last");
+                var parkCard = domConstruct.create("div", { id: oid, innerHTML: parkCardHtml, class: "parkcard" }, "parks-list", "last");
                 on(parkCard, "click", lang.hitch(this, this.goToParkInfo, feature));
-                console.log("Added park ", oid);
+                // console.log("Added park ", oid);
             }
             // Make parks list panel appear
             this.showPanel("parks-list");
         },
 
         clearParksList: function() {
-            console.log("about to clear parks list");
-            dojo.query(".parkcard", this.parksList).forEach(function(parkCard){
+            // console.log("about to clear parks list");
+            dojo.query(".parkcard", this.parksList).forEach(function(parkCard) {
                 domConstruct.destroy(parkCard);
             });
         },
 
-        goToParkInfo: function(feature, event){
+        goToParkInfo: function(feature, event) {
             console.log("Going to park info: ", feature.attributes.OBJECTID);
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
@@ -263,9 +262,9 @@ define([
 
             var title = feature.attributes.Name;
             this.sidebarTitle.innerHTML = "";
-            var span = domConstruct.create("span", {class: "glyphicon glyphicon-menu-left back-button"}, this.sidebarTitle, "first");
-            var div = domConstruct.create("div", {innerHTML: title}, this.sidebarTitle, "last");
-            on(span, "click", lang.hitch(this, function(event){
+            var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
+            var div = domConstruct.create("div", { innerHTML: title }, this.sidebarTitle, "last");
+            on(span, "click", lang.hitch(this, function(event) {
                 this.showPanel('parks-list');
             }));
             // Format park detail page for specific park
@@ -288,14 +287,14 @@ define([
             this.showPanel("park-detail");
         },
 
-        showPanel: function(panelId){
-            for(var id in this.panels){
+        showPanel: function(panelId) {
+            for (var id in this.panels) {
                 var panel = this.panels[id].node;
-                if(id == panelId ){
-                    if(this.panels[id].sidebarHTML){
+                if (id == panelId) {
+                    if (this.panels[id].sidebarHTML) {
                         this.sidebarTitle.innerHTML = this.panels[id].sidebarHTML;
                     }
-                    if(panel.classList.contains("hidden")){
+                    if (panel.classList.contains("hidden")) {
                         panel.classList.remove("hidden");
                     }
                     // panel.refresh();
