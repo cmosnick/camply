@@ -142,7 +142,7 @@ define([
                 content: "${*}"
             });
             this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks/MapServer/0", {
-            // this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
+                // this.campSiteLayer = new FeatureLayer("http://services.arcgis.com/dkFz166a8Pp3vBsS/arcgis/rest/services/SurveyParks2Me/FeatureServer/0", {
                 id: "campSiteLayer",
                 infoTemplate: infoTemplate,
                 outFields: ["*"],
@@ -285,10 +285,21 @@ define([
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
             //var geom = webMercatorUtils.geographicToWebMercator(geometry);
+
             var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
             console.log(normalizedVal); //returns 19.226, 11.789
-            console.log(geometry.x);
-            console.log(geometry);
+            console.log(normalizedVal[0]);
+            console.log(normalizedVal[1]);
+            var query1 = "http://api.openweathermap.org/data/2.5/weather?lat=" + normalizedVal[1] + "&lon=" + normalizedVal[0] + "39&appid=351fa6847fafdb396d6a1c0ab26254ed";
+            var query2 = "https://maps.googleapis.com/maps/api/streetview?size=300x300&location=" + normalizedVal[1] + "," + normalizedVal[0] + "&heading=151.78&pitch=-0.76&key=AIzaSyCfEdqUASj97WuPXsSfpoWVdrsVWWvMcVc";
+            console.log("http://api.openweathermap.org/data/2.5/weather?lat=" + normalizedVal[1] + "&lon=" + normalizedVal[0] + "39&appid=351fa6847fafdb396d6a1c0ab26254ed");
+            console.log(query2);
+            $.getJSON(query1, function(result) {
+                console.log(result.weather[0].description);
+                console.log(result.main.temp);
+                console.log(result.wind.speed);
+
+            });
 
 
             var title = feature.attributes.Name;
@@ -314,7 +325,7 @@ define([
                                     <img style="width:30%; height:80px;margin-right:3%" src="images/1.png"><img style="width:30%;margin-right:3%; height:80px" src="images/2.png"> <img style="width:30%; height:80px" src="images/3.jpg"> </div>\
                             </div>';
             this.parkDetail.innerHTML = parkCardHtml;
-            var button = domConstruct.create("input", { style: "margin-top:30px", value: "5 campsites available" }, this.parkDetail, "last");
+            var button = domConstruct.create("input", { style: "margin-top:30px; width:100%; text-align:center; margin-left:auto; background-color:#4CAF50; color:white;", value: "5 campsites available", class:"styledbtn" }, this.parkDetail, "last");
             on(button, "click", lang.hitch(this, this.displayCampsites, feature));
             this.showPanel("park-detail");
         },
@@ -366,29 +377,29 @@ define([
                     content: {
                         f: "json"
                     }
-                }).then(lang.hitch(this, function(userInfo){
+                }).then(lang.hitch(this, function(userInfo) {
                     userInfo = JSON.parse(userInfo);
                     var startDate = new Date(campsite.startDate);
                     var endDate = new Date(campsite.endDate);
 
-                    var startString = (startDate.getDay()) + "/" + (startDate.getMonth()+1)+"/" +(startDate.getYear());
-                    var endString = (endDate.getDay()) + "/" + (endDate.getMonth()+1)+"/" +(endDate.getYear());
-                    var campSiteHtml = '<div style="float:none"><p class="parkname">'+park.attributes.Name+'</p>\
-                               <p class="distance">'+userInfo.username+'</p></div>\
+                    var startString = (startDate.getDay()) + "/" + (startDate.getMonth() + 1) + "/" + (startDate.getYear());
+                    var endString = (endDate.getDay()) + "/" + (endDate.getMonth() + 1) + "/" + (endDate.getYear());
+                    var campSiteHtml = '<div style="float:none"><p class="parkname">' + park.attributes.Name + '</p>\
+                               <p class="distance">' + userInfo.username + '</p></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Available time</p>\
-                               <p class="distance">'+startString + "-" + endString+'</p></div>\
+                               <p class="distance">' + startString + "-" + endString + '</p></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Number of people</p>\
                                <p class="distance">' + numPersons + '</p></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Email</p>\
-                               <p class="distance">'+userInfo.email+'</p></div>\
+                               <p class="distance">' + userInfo.email + '</p></div>\
                                <div style="clear: both;"></div>\
                                <div style="float:none"><p class="parkname">Phone number</p>\
-                               <p class="distance">'+userInfo.phone+'</p></div>\
+                               <p class="distance">' + userInfo.phone + '</p></div>\
                                <div style="clear: both;"></div>';
-                   var parkCard = domConstruct.create("div", { id: campsite.id, innerHTML: campSiteHtml, class: "parkcard" }, "campsites-list", "last"); 
+                    var parkCard = domConstruct.create("div", { id: campsite.id, innerHTML: campSiteHtml, class: "parkcard" }, "campsites-list", "last");
                 }));
             }
             this.showPanel("campsites-list");
