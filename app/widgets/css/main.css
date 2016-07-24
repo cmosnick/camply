@@ -150,6 +150,13 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 .whitewindowbtn{width: 250px;    background-color: #4CAF50;
     color: white;
+        width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 .whitewindow{width: 250px;    border: thin solid #4CAF50;
     background-color: white;

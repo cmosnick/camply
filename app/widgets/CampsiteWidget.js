@@ -353,13 +353,24 @@ define([
                 }
 
                 var string = attributes.join(", ");
+<<<<<<< HEAD
+              
+                             domConstruct.create("",
+                            {
+                                background: "image/1.jpg",
+                                width: 20px,
+                                height: 20px,
+                            },this.parkDetail, "first");
+=======
                 if(attributes.length > 0){
                     domConstruct.create("p", {class: "tags", innerHTML: string}, this.parkDetail, "first");
                     domConstruct.create("label", {innerHTML: "Attributes"}, this.parkDetail, "first");
 
                 }
                 
+>>>>>>> origin/master
                 this.showPanel("park-detail");
+   
             }));
 
 
