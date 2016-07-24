@@ -326,8 +326,8 @@ define([
                 var parkCardHtml = '<div class="parkcard">\
                                 <label>Distance</label>\
                                 <p>'+ dist.toPrecision(3) +' miles</p>\
-                                <label>Address</label>\
-                                <p>123 ABC St, City, State 11111</p>\
+                                <label>Phone Number</label>\
+                                <p>'+feature.attributes.Phone+'</p>\
                                 <label>Weather (today) <span class="weather-source">from Weather.com&reg;</span></label>\
                                 <p>' + weatherjson.weather[0].description + '</p>\
                                 <label>Temperature (today) <span class="weather-source">from Weather.com&reg;</span></label>\
@@ -362,15 +362,8 @@ define([
                 }
             
                 this.showPanel("park-detail");
-   
+
             }));
-
-
-
-
-
-
-
         },
 
         showPanel: function(panelId) {
