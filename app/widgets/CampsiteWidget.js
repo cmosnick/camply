@@ -35,7 +35,7 @@ define([
     "esri/geometry/Extent",
 
     "esri/InfoTemplate",
-
+    "esri/geometry/webMercatorUtils",
     "dojo/domReady!",
 
 
@@ -67,7 +67,6 @@ define([
     Graphic,
     graphicsUtils,
 
-
     BufferParameters,
     GeometryService,
     QueryTask,
@@ -75,7 +74,10 @@ define([
 
     Extent,
 
-    InfoTemplate
+     
+    InfoTemplate,
+    webMercatorUtils
+
 
 ) {
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -267,9 +269,14 @@ define([
             console.log("Going to park info: ", feature.attributes.OBJECTID);
             // TODO: get feature, get weather, driving distance, etc
             var geometry = feature.geometry;
+            //var geom = webMercatorUtils.geographicToWebMercator(geometry);
+                          var normalizedVal = webMercatorUtils.xyToLngLat(geometry.x, geometry.y);
+             console.log(normalizedVal); //returns 19.226, 11.789
+                        console.log(geometry.x);
+                        console.log(geometry);
             
-
-
+            
+            
             var title = feature.attributes.Name;
             this.sidebarTitle.innerHTML = "";
             var span = domConstruct.create("span", { class: "glyphicon glyphicon-menu-left back-button" }, this.sidebarTitle, "first");
