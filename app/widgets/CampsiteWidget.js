@@ -9,8 +9,6 @@ define([
     "dojo/promise/all",
 
     "dijit/_WidgetBase",
-    "dijit/_TemplatedMixin",
-    'dojo/text!/widgets/templates/CampsiteWidget.html',
     "xstyle!/widgets/css/CampsiteWidget.css",
 
     'esri/map',
@@ -53,8 +51,6 @@ define([
     all,
 
     _WidgetBase,
-    _TemplatedMixin,
-    template,
     css,
 
     Map,
@@ -86,8 +82,7 @@ define([
 
 
 ) {
-    return declare([_WidgetBase, _TemplatedMixin], {
-        templateString: template,
+    return declare([_WidgetBase], {
         selectionColor: new Color([93, 191, 63]),
         renderColor: new Color([255, 153, 51]),
         bufferValue: 20,
