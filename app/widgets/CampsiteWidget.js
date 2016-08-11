@@ -9,7 +9,6 @@ define([
     "dojo/promise/all",
 
     "dijit/_WidgetBase",
-    "xstyle!/widgets/css/CampsiteWidget.css",
 
     'esri/map',
     "esri/dijit/Search",
@@ -51,7 +50,6 @@ define([
     all,
 
     _WidgetBase,
-    css,
 
     Map,
     Search,
