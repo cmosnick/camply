@@ -38,6 +38,7 @@ define([
 
     "esri/InfoTemplate",
     "esri/geometry/webMercatorUtils",
+    "esri/arcgis/utils",
     "dojo/domReady!",
 
 
@@ -80,7 +81,8 @@ define([
 
 
     InfoTemplate,
-    webMercatorUtils
+    webMercatorUtils,
+    arcgisUtils
 
 
 ) {
@@ -123,18 +125,26 @@ define([
             // Create sidebar
             this.createSidebar();
 
+            var mapid = "2b12174803ba42129c14c3fc7cd22116";
             // Create map
-            this.map = new Map("mapDiv", {
+            mapDeferred = new arcgisUtils.createMap(mapid, "mapDiv", {
                 basemap: "topo",
                 center: [-122.69, 45.52],
                 zoom: 3
-            });
+            }).then(lang.hitch(this, function(response){
+                this.map = response.map;
+                this.geomService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
 
-            this.geomService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+                this.addLayersToMap();
 
-            this.addLayersToMap();
+                this.initMapWidgets();                
+            }));
 
-            this.initMapWidgets();
+            // this.geomService = new GeometryService("https://utility.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
+
+            // this.addLayersToMap();
+
+            // this.initMapWidgets();
         },
 
         addLayersToMap: function() {
@@ -142,15 +152,18 @@ define([
                 title: "${Name}",
                 content: "${*}"
             });
-            this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks2/MapServer/0", {
-                id: "campSiteLayer",
-                infoTemplate: infoTemplate,
-                outFields: ["*"],
-                mode: FeatureLayer.MODE_ONDEMAND
-            });
+            
+            // this.campSiteLayer = new FeatureLayer("http://dev002023.esri.com/arcgis/rest/services/Parks/Parks2/MapServer/0", {
+            //     id: "campSiteLayer",
+            //     infoTemplate: infoTemplate,
+            //     outFields: ["*"],
+            //     mode: FeatureLayer.MODE_ONDEMAND
+            // });
             // this.campSiteLayer.setRenderer(new SimpleRenderer(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.renderColor)));
             // this.campSiteLayer.setSelectionSymbol(new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 5, null, this.selectionColor));
-            this.map.addLayer(this.campSiteLayer);
+            // this.map.addLayer(this.campSiteLayer);
+
+            this.campSiteLayer = this.map.getLayer("parks_shp_993_0");
 
             on(this.campSiteLayer, "click", lang.hitch(this, this.selectSingleFeature));
         },
