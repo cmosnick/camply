@@ -25,7 +25,6 @@ define([
     "esri/graphic",
     "esri/graphicsUtils",
 
-
     "esri/tasks/BufferParameters",
     "esri/tasks/GeometryService",
     "esri/tasks/QueryTask",
@@ -36,7 +35,7 @@ define([
     "esri/InfoTemplate",
     "esri/geometry/webMercatorUtils",
     "esri/arcgis/utils",
-    "dojo/domReady!",
+    "dojo/domReady!"
 
 
 ], function(
@@ -111,7 +110,7 @@ define([
             this.sidebarTitle = dom.byId("sidebar-title");
             this.selectedFeatures = {};
 
-            this.inherited(arguments);
+            this.inherited();
         },
 
         startup: function() {
