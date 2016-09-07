@@ -110,7 +110,7 @@ define([
             this.sidebarTitle = dom.byId("sidebar-title");
             this.selectedFeatures = {};
 
-            this.inherited();
+            this.inherited(arguments);
         },
 
         startup: function() {
